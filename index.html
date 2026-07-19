@@ -3,212 +3,1761 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>A Evolução da NVIDIA</title>
+  <title>NVIDIA Evolution — A Evolução que Recria a Realidade</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    :root { --bg:#05070f; }
-    * { margin:0; padding:0; }
+    :root {
+      --bg: #03050b;
+      --panel: rgba(8, 12, 28, 0.56);
+      --line: rgba(126, 180, 255, 0.16);
+      --txt: #eef4ff;
+      --muted: #a6b7de;
+      --blue: #6fb7ff;
+      --cyan: #43f1c8;
+      --violet: #8f7bff;
+      --display: "Space Grotesk", sans-serif;
+      --body: "Inter", sans-serif;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background: var(--bg);
-      color: #eaf0ff;
-      font-family: system-ui, sans-serif;
+      color: var(--txt);
+      font-family: var(--body);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-    #bg3d { position: fixed; inset: 0; z-index: 0; }
-    .app { position: relative; z-index: 1; min-height: 480vh; }
-    header {
-      position: sticky; top: 0; z-index: 10;
-      backdrop-filter: blur(20px);
-      background: rgba(5,7,15,0.8);
-      border-bottom: 1px solid rgba(118,183,255,0.15);
+
+    ::selection {
+      background: rgba(67, 241, 200, 0.28);
+      color: #ffffff;
     }
-    .topbar {
-      max-width: 1100px; margin: 0 auto; padding: 16px 20px;
-      display: flex; align-items: center; justify-content: space-between;
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    .title-hero {
-      font-size: clamp(38px, 10vw, 92px);
-      font-weight: 950;
-      letter-spacing: -0.06em;
-      line-height: 0.95;
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    #bg3d {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      display: block;
+      pointer-events: none;
+    }
+
+    .noise,
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .noise {
+      opacity: 0.055;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    }
+
+    .vignette {
+      background:
+        radial-gradient(circle at 50% 18%, transparent 0%, rgba(0, 0, 0, 0.18) 52%, rgba(0, 0, 0, 0.58) 100%);
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 1000;
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--violet));
+      box-shadow: 0 0 24px rgba(67, 241, 200, 0.35);
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 18px 0;
+      transition: all 0.35s var(--ease);
+    }
+
+    .site-header.scrolled {
+      padding: 10px 0;
+      background: rgba(3, 5, 11, 0.72);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(126, 180, 255, 0.12);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      font-size: 15px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 18px var(--cyan);
+      flex: 0 0 auto;
+    }
+
+    .brand-thin {
+      font-weight: 500;
+      opacity: 0.55;
+      letter-spacing: 0.22em;
+      font-size: 0.72em;
+      margin-left: 2px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 26px;
+    }
+
+    .nav a {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.25s var(--ease);
+    }
+
+    .nav a:hover {
+      color: #fff;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 26px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      border: 0;
+      transition:
+        transform 0.3s var(--ease),
+        box-shadow 0.3s var(--ease),
+        border-color 0.3s var(--ease),
+        background 0.3s var(--ease);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      color: #031018;
+      box-shadow: 0 12px 40px rgba(67, 241, 200, 0.22);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 18px 60px rgba(67, 241, 200, 0.32);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-ghost:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .header-cta {
+      min-height: 44px;
+      padding: 0 20px;
+      font-size: 14px;
+    }
+
+    main {
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
       text-align: center;
-      padding: 140px 20px 80px;
-      background: linear-gradient(90deg, #76b7ff, #2ef2a5, #76b7ff);
+      padding: 130px 0 90px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(126, 180, 255, 0.2);
+      background: rgba(8, 13, 30, 0.55);
+      backdrop-filter: blur(12px);
+      color: #b9d6ff;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      margin: 26px auto 18px;
+      max-width: 16ch;
+      font-family: var(--display);
+      font-size: clamp(3.4rem, 10vw, 8.6rem);
+      line-height: 0.92;
+      letter-spacing: -0.065em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .gradient-text {
+      color: var(--cyan);
+      background: linear-gradient(90deg, #7cc0ff, #49f3c7, #9b8cff, #7cc0ff);
+      background-size: 220% auto;
       -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 6s linear infinite;
+    }
+
+    @keyframes shine {
+      to {
+        background-position: 220% center;
+      }
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+    }
+
+    .hero-stats {
+      margin: 56px auto 0;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      width: min(980px, calc(100% - 40px));
+    }
+
+    .stat {
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(7, 11, 26, 0.55);
+      border: 1px solid rgba(126, 180, 255, 0.14);
+      backdrop-filter: blur(16px);
+    }
+
+    .stat b {
+      display: block;
+      font-family: var(--display);
+      font-size: clamp(1.4rem, 3vw, 2.4rem);
+      line-height: 1.05;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .mouse {
+      width: 26px;
+      height: 42px;
+      border: 2px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      position: relative;
+    }
+
+    .mouse::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      width: 4px;
+      height: 8px;
+      background: var(--cyan);
+      border-radius: 999px;
+      transform: translateX(-50%);
+      animation: wheel 1.6s infinite;
+    }
+
+    @keyframes wheel {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 0);
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, 16px);
+      }
+    }
+
+    .marquee {
+      position: relative;
+      z-index: 3;
+      overflow: hidden;
+      border-top: 1px solid rgba(126, 180, 255, 0.12);
+      border-bottom: 1px solid rgba(126, 180, 255, 0.12);
+      background: rgba(4, 7, 17, 0.5);
+      backdrop-filter: blur(14px);
+      padding: 18px 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 25s linear infinite;
+    }
+
+    .marquee-track > span {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      padding-right: 36px;
+      white-space: nowrap;
+      font-family: var(--display);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+    }
+
+    .marquee i {
+      color: var(--cyan);
+      font-style: normal;
+      margin: 0 4px;
+    }
+
+    @keyframes marquee {
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    .section {
+      position: relative;
+      z-index: 3;
+      padding: 110px 0;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(126, 180, 255, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+      color: #c4dcff;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      margin: 18px 0 20px;
+    }
+
+    .section-lead {
+      max-width: 800px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: end;
+    }
+
+    .manifesto-text {
+      font-family: var(--display);
+      font-size: clamp(2.2rem, 4.8vw, 4.3rem);
+      line-height: 1.03;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+    }
+
+    .accent {
+      color: var(--cyan);
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .subtitle-hero {
+
+    .manifesto-side {
+      display: grid;
+      gap: 22px;
+    }
+
+    .manifesto-side p {
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 1.02rem;
+    }
+
+    .timeline {
+      position: relative;
+      margin-top: 60px;
+      display: grid;
+      gap: 28px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 24px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(111, 183, 255, 0.65), rgba(67, 241, 200, 0.65), rgba(143, 123, 255, 0.55));
+      opacity: 0.35;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 80px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 16px;
+      top: 8px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #041022;
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 20px rgba(67, 241, 200, 0.5);
+    }
+
+    .timeline-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 30px;
+      backdrop-filter: blur(18px);
+      transition:
+        transform 0.35s var(--ease),
+        border-color 0.35s var(--ease),
+        box-shadow 0.35s var(--ease);
+    }
+
+    .timeline-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(500px circle at 20% 0%, rgba(111, 183, 255, 0.12), transparent 45%);
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(67, 241, 200, 0.4);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .timeline-year {
+      font-family: var(--display);
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1;
+      color: rgba(140, 190, 255, 0.18);
+      -webkit-text-stroke: 1px rgba(140, 190, 255, 0.5);
+      margin-bottom: 14px;
+    }
+
+    .timeline-card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+
+    .timeline-card p {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .timeline-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(126, 180, 255, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+      color: #c4dcff;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+      margin-top: 56px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 28px;
+      background: rgba(7, 11, 26, 0.56);
+      border: 1px solid rgba(126, 180, 255, 0.14);
+      backdrop-filter: blur(18px);
+      transition:
+        transform 0.35s var(--ease),
+        border-color 0.35s var(--ease),
+        box-shadow 0.35s var(--ease);
+      transform-style: preserve-3d;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        600px circle at var(--mx, 50%) var(--my, 50%),
+        rgba(80, 220, 255, 0.16),
+        transparent 40%
+      );
+      opacity: 0;
+      transition: opacity 0.3s var(--ease);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(105, 220, 255, 0.35);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #031018;
+      font-weight: 900;
+      font-size: 15px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 30px rgba(67, 241, 200, 0.22);
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.98rem;
+    }
+
+    .card-index {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-family: var(--display);
+      color: rgba(255, 255, 255, 0.16);
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 50px;
+    }
+
+    .metric {
+      padding: 34px 26px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(10, 16, 38, 0.72), rgba(5, 8, 20, 0.52));
+      border: 1px solid rgba(126, 180, 255, 0.14);
+      backdrop-filter: blur(18px);
+    }
+
+    .metric b {
+      display: block;
+      font-family: var(--display);
+      font-size: clamp(2.6rem, 5vw, 4.4rem);
+      line-height: 1;
+      color: var(--cyan);
+      background: linear-gradient(90deg, #8fd8ff, #49f3c7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .cta-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 36px;
+      padding: clamp(48px, 8vw, 96px) 24px;
       text-align: center;
-      font-size: 19px;
-      max-width: 720px;
+      border: 1px solid rgba(126, 180, 255, 0.18);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(54, 120, 255, 0.22), transparent 42%),
+        rgba(5, 8, 20, 0.66);
+      backdrop-filter: blur(20px);
+    }
+
+    .cta-box h2 {
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 7vw, 5.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      margin: 18px auto 18px;
+      max-width: 16ch;
+    }
+
+    .cta-box p {
+      max-width: 760px;
       margin: 0 auto;
-      color: #aaccff;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 3;
+      border-top: 1px solid rgba(126, 180, 255, 0.12);
+      padding: 30px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(42px);
+      filter: blur(10px);
+      transition:
+        opacity 1s var(--ease),
+        transform 1s var(--ease),
+        filter 1s var(--ease);
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+
+    @media (max-width: 900px) {
+      .manifesto-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .section {
+        padding: 84px 0;
+      }
+
+      .timeline::before {
+        left: 14px;
+      }
+
+      .timeline-item {
+        padding-left: 52px;
+      }
+
+      .timeline-dot {
+        left: 6px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+
+      .marquee-track,
+      .gradient-text,
+      .mouse::after {
+        animation: none !important;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="progress" id="progress"></div>
   <canvas id="bg3d"></canvas>
+  <div class="noise"></div>
+  <div class="vignette"></div>
 
-  <div class="app">
-    <header>
-      <div class="topbar">
-        <div style="font-weight:900; font-size:15px; letter-spacing:1px;">NVIDIA</div>
-      </div>
-    </header>
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand">
+        <span class="brand-dot"></span>
+        NVIDIA
+        <span class="brand-thin">EVOLUTION</span>
+      </a>
 
-    <h1 class="title-hero">A EVOLUÇÃO QUE RECRIA A REALIDADE</h1>
-    <p class="subtitle-hero">Role lentamente e sinta a jornada completa da NVIDIA</p>
+      <nav class="nav">
+        <a href="#manifesto">Manifesto</a>
+        <a href="#timeline">Linha do tempo</a>
+        <a href="#tech">Tecnologia</a>
+        <a href="#metrics">Futuro</a>
+      </nav>
 
-    <!-- Cards simples para manter o conteúdo -->
-    <div style="max-width:980px; margin:140px auto; padding:20px; display:grid; gap:40px; grid-template-columns:repeat(auto-fit, minmax(380px,1fr));">
-      <div style="background:rgba(15,23,49,0.6); padding:32px; border-radius:20px; border:1px solid rgba(118,183,255,0.2);">
-        <h3 style="font-size:22px; margin-bottom:12px;">1993–2000</h3>
-        <p style="opacity:0.85;">Do primeiro chip gráfico até a revolução GeForce que mudou os jogos para sempre.</p>
+      <a href="#cta" class="btn btn-primary header-cta">Explorar</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <span class="hero-badge" data-reveal>GPU • IA • Realidade • 2026</span>
+
+        <h1 data-reveal data-delay="80ms">
+          A EVOLUÇÃO QUE
+          <span class="gradient-text">RECRIA A REALIDADE</span>
+        </h1>
+
+        <p data-reveal data-delay="160ms">
+          Uma jornada cinematográfica pela força que transformou placas de vídeo
+          em motores de inteligência artificial, simulação física e mundos digitais.
+        </p>
+
+        <div class="hero-actions" data-reveal data-delay="240ms">
+          <a href="#timeline" class="btn btn-primary">Iniciar jornada</a>
+          <a href="#tech" class="btn btn-ghost">Ver tecnologias</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat" data-reveal data-delay="320ms">
+            <b>1993</b>
+            <span>a origem</span>
+          </div>
+          <div class="stat" data-reveal data-delay="380ms">
+            <b>GPU</b>
+            <span>computação acelerada</span>
+          </div>
+          <div class="stat" data-reveal data-delay="440ms">
+            <b>RTX</b>
+            <span>ray tracing em tempo real</span>
+          </div>
+          <div class="stat" data-reveal data-delay="500ms">
+            <b>IA</b>
+            <span>fábricas inteligentes</span>
+          </div>
+        </div>
       </div>
-      <div style="background:rgba(15,23,49,0.6); padding:32px; border-radius:20px; border:1px solid rgba(118,183,255,0.2);">
-        <h3 style="font-size:22px; margin-bottom:12px;">2006–2018</h3>
-        <p style="opacity:0.85;">CUDA + Tensor Cores transformam GPUs em supercomputadores de IA.</p>
+
+      <div class="scroll-hint">
+        <div class="mouse"></div>
+        <span>role para acelerar</span>
       </div>
-      <div style="background:rgba(15,23,49,0.6); padding:32px; border-radius:20px; border:1px solid rgba(118,183,255,0.2);">
-        <h3 style="font-size:22px; margin-bottom:12px;">2023–2026</h3>
-        <p style="opacity:0.85;">Omniverse, Ray Tracing em tempo real e o futuro da computação física + IA.</p>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>
+          RAY TRACING <i>◆</i>
+          DLSS <i>◆</i>
+          CUDA <i>◆</i>
+          TENSOR CORES <i>◆</i>
+          OMNIVERSE <i>◆</i>
+          PHYSICAL AI <i>◆</i>
+          ROBOTICS <i>◆</i>
+          CLOUD GPU <i>◆</i>
+        </span>
+        <span>
+          RAY TRACING <i>◆</i>
+          DLSS <i>◆</i>
+          CUDA <i>◆</i>
+          TENSOR CORES <i>◆</i>
+          OMNIVERSE <i>◆</i>
+          PHYSICAL AI <i>◆</i>
+          ROBOTICS <i>◆</i>
+          CLOUD GPU <i>◆</i>
+        </span>
       </div>
     </div>
-  </div>
+
+    <section class="section" id="manifesto">
+      <div class="container manifesto-grid">
+        <div>
+          <span class="section-tag" data-reveal>Manifesto</span>
+          <h2 class="manifesto-text" data-reveal data-delay="80ms">
+            A GPU deixou de ser apenas uma placa de vídeo.
+            Ela virou o
+            <span class="accent">motor visual da inteligência artificial</span>.
+          </h2>
+        </div>
+
+        <div class="manifesto-side" data-reveal data-delay="160ms">
+          <p>
+            O que começou acelerando pixels em jogos agora alimenta treinamento de IA,
+            robôs, gêmeos digitais, carros autônomos, simulações científicas e
+            universos inteiros criados em tempo real.
+          </p>
+          <a class="btn btn-ghost" href="#timeline">Ver linha do tempo</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="timeline">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-tag" data-reveal>Linha do tempo</span>
+          <h2 class="section-title" data-reveal data-delay="80ms">Décadas de aceleração</h2>
+          <p class="section-lead" data-reveal data-delay="160ms">
+            Cada salto da NVIDIA não apenas melhorou gráficos. Ele redefiniu o que
+            computação significa.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-item" data-reveal>
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-year">1993</div>
+              <h3>A origem da aceleração</h3>
+              <p>
+                A NVIDIA nasce com a missão de acelerar gráficos e transformar
+                computadores em máquinas visuais. O jogo deixa de ser só imagem:
+                vira experiência.
+              </p>
+              <div class="timeline-tags">
+                <span class="tag">NV1</span>
+                <span class="tag">RIVA</span>
+                <span class="tag">3D</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-item" data-reveal>
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-year">1999</div>
+              <h3>GeForce 256: a primeira GPU</h3>
+              <p>
+                O termo GPU ganha vida. Transform & lighting em hardware abre
+                caminho para mundos 3D mais ricos, jogos mais imersivos e uma
+                nova era visual.
+              </p>
+              <div class="timeline-tags">
+                <span class="tag">GeForce</span>
+                <span class="tag">GPU</span>
+                <span class="tag">Gaming</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-item" data-reveal>
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-year">2006</div>
+              <h3>CUDA: a GPU vira supercomputador</h3>
+              <p>
+                Com CUDA, a GPU sai dos jogos e entra na ciência, simulação,
+                pesquisa e computação paralela massiva. Começa a base da era da IA.
+              </p>
+              <div class="timeline-tags">
+                <span class="tag">CUDA</span>
+                <span class="tag">HPC</span>
+                <span class="tag">Parallel</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-item" data-reveal>
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-year">2018</div>
+              <h3>RTX e Tensor Cores</h3>
+              <p>
+                Ray tracing em tempo real e aceleração de IA mudam o padrão visual.
+                Luz, sombra, reflexos e inteligência passam a coexistir em tempo real.
+              </p>
+              <div class="timeline-tags">
+                <span class="tag">RTX</span>
+                <span class="tag">Ray Tracing</span>
+                <span class="tag">Tensor</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-item" data-reveal>
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-year">2020</div>
+              <h3>Omniverse e gêmeos digitais</h3>
+              <p>
+                Simulação colaborativa, mundos industriais digitais e física realista
+                começam a fundir produção, design e inteligência em um só ambiente.
+              </p>
+              <div class="timeline-tags">
+                <span class="tag">Omniverse</span>
+                <span class="tag">Digital Twin</span>
+                <span class="tag">Simulation</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-item" data-reveal>
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-year">2026</div>
+              <h3>Physical AI e fábricas de IA</h3>
+              <p>
+                A próxima fronteira: IA que entende o mundo físico, robôs mais
+                inteligentes, data centers acelerados e computação que recria
+                a realidade em escala.
+              </p>
+              <div class="timeline-tags">
+                <span class="tag">Physical AI</span>
+                <span class="tag">Robotics</span>
+                <span class="tag">AI Factories</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tech">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-tag" data-reveal>Tecnologia</span>
+          <h2 class="section-title" data-reveal data-delay="80ms">O arsenal por trás do futuro</h2>
+          <p class="section-lead" data-reveal data-delay="160ms">
+            Não é só hardware. É uma pilha completa de aceleração: chips, software,
+            IA, simulação e ecossistema.
+          </p>
+        </div>
+
+        <div class="cards-grid">
+          <article class="card" data-reveal>
+            <div class="card-index">01</div>
+            <div class="card-icon">RT</div>
+            <h3>Ray Tracing</h3>
+            <p>
+              Iluminação fisicamente precisa em tempo real, com reflexos, sombras
+              e profundidade cinematográfica.
+            </p>
+          </article>
+
+          <article class="card" data-reveal data-delay="70ms">
+            <div class="card-index">02</div>
+            <div class="card-icon">DL</div>
+            <h3>DLSS</h3>
+            <p>
+              IA reconstruindo quadros para entregar mais performance e qualidade
+              visual sem perder fluidez.
+            </p>
+          </article>
+
+          <article class="card" data-reveal data-delay="140ms">
+            <div class="card-index">03</div>
+            <div class="card-icon">CU</div>
+            <h3>CUDA</h3>
+            <p>
+              Computação paralela massiva que transformou GPUs em plataformas
+              científicas e de IA.
+            </p>
+          </article>
+
+          <article class="card" data-reveal data-delay="210ms">
+            <div class="card-index">04</div>
+            <div class="card-icon">TC</div>
+            <h3>Tensor Cores</h3>
+            <p>
+              Núcleos especializados para acelerar treinamento, inferência e
+              cargas de inteligência artificial.
+            </p>
+          </article>
+
+          <article class="card" data-reveal>
+            <div class="card-index">05</div>
+            <div class="card-icon">OM</div>
+            <h3>Omniverse</h3>
+            <p>
+              Ambientes colaborativos de simulação e gêmeos digitais para indústrias,
+              design e robótica.
+            </p>
+          </article>
+
+          <article class="card" data-reveal data-delay="70ms">
+            <div class="card-index">06</div>
+            <div class="card-icon">AI</div>
+            <h3>Physical AI</h3>
+            <p>
+              Sistemas que compreendem física, espaço e movimento para operar
+              no mundo real.
+            </p>
+          </article>
+
+          <article class="card" data-reveal data-delay="140ms">
+            <div class="card-index">07</div>
+            <div class="card-icon">RB</div>
+            <h3>Robotics</h3>
+            <p>
+              Robôs treinados em simulação e preparados para tarefas complexas
+              com percepção avançada.
+            </p>
+          </article>
+
+          <article class="card" data-reveal data-delay="210ms">
+            <div class="card-index">08</div>
+            <div class="card-icon">CL</div>
+            <h3>Cloud GPU</h3>
+            <p>
+              Infraestrutura acelerada em nuvem para escalar IA, renderização
+              e computação de alto desempenho.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="metrics">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-tag" data-reveal>Impacto</span>
+          <h2 class="section-title" data-reveal data-delay="80ms">Uma trajetória em aceleração</h2>
+          <p class="section-lead" data-reveal data-delay="160ms">
+            Do gaming à IA física, a evolução não é linear. É exponencial.
+          </p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric" data-reveal>
+            <b data-count="30" data-suffix="+">0+</b>
+            <span>anos de inovação em computação acelerada</span>
+          </div>
+
+          <div class="metric" data-reveal data-delay="80ms">
+            <b data-count="8">0</b>
+            <span>grandes marcos tecnológicos nesta jornada</span>
+          </div>
+
+          <div class="metric" data-reveal data-delay="160ms">
+            <b data-count="360" data-suffix="°">0°</b>
+            <span>ecossistema completo: hardware, software e IA</span>
+          </div>
+
+          <div class="metric" data-reveal data-delay="240ms">
+            <b data-count="2026">0</b>
+            <span>o presente já conectado ao futuro</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cta">
+      <div class="container">
+        <div class="cta-box" data-reveal>
+          <span class="section-tag">Comece agora</span>
+          <h2>O próximo salto da computação começa aqui</h2>
+          <p>
+            Se você quer criar experiências visuais impressionantes, produtos com IA,
+            simulações realistas ou interfaces que parecem vindas do futuro,
+            a próxima década será construída sobre aceleração.
+          </p>
+          <div class="hero-actions">
+            <a href="#top" class="btn btn-primary">Rever a jornada</a>
+            <a href="#tech" class="btn btn-ghost">Explorar tecnologias</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div>© 2026 NVIDIA Evolution — site conceito não oficial.</div>
+      <div>Feito com Three.js, scroll cinematográfico e visual premium.</div>
+    </div>
+  </footer>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
 
   <script type="module">
-    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-
-    const renderer = new THREE.WebGLRenderer({ 
-      canvas: document.getElementById("bg3d"), 
-      antialias: true, 
-      alpha: true 
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.8));
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0a0f1f, 0.018);
-
-    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 600);
-    camera.position.set(0, 8, 45);
-
-    // Luzes cinematográficas
-    scene.add(new THREE.AmbientLight(0x99aaff, 0.6));
-    const k1 = new THREE.DirectionalLight(0x77ddff, 2.8); k1.position.set(20,40,30); scene.add(k1);
-    const k2 = new THREE.DirectionalLight(0x22ffbb, 2.2); k2.position.set(-30,20,-20); scene.add(k2);
-
-    // Núcleo central futurista
-    const core = new THREE.Group();
-    scene.add(core);
-
-    const mainCore = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(5.5, 3),
-      new THREE.MeshPhongMaterial({ 
-        color: 0x4488ff, 
-        emissive: 0x00ffcc, 
-        shininess: 120,
-        specular: 0xffffff,
-        emissiveIntensity: 1.2
-      })
-    );
-    core.add(mainCore);
-
-    // Anéis de luz em movimento
-    const rings = [];
-    for (let i = 0; i < 7; i++) {
-      const r = new THREE.Mesh(
-        new THREE.TorusGeometry(9 + i*1.8, 0.12, 40, 140),
-        new THREE.MeshBasicMaterial({
-          color: i % 2 === 0 ? 0x00ffcc : 0x77aaff,
-          transparent: true,
-          opacity: 0.6,
-          blending: THREE.AdditiveBlending
-        })
-      );
-      r.rotation.x = Math.PI / 2 + i * 0.3;
-      core.add(r);
-      rings.push(r);
-    }
-
-    // Partículas cinematográficas (estilo AI video)
-    const pCount = 8500;
-    const pGeo = new THREE.BufferGeometry();
-    const pPos = new Float32Array(pCount * 3);
-    const pVel = new Float32Array(pCount * 3);
-
-    for (let i = 0; i < pCount * 3; i += 3) {
-      pPos[i]   = (Math.random()-0.5)*120;
-      pPos[i+1] = (Math.random()-0.5)*80;
-      pPos[i+2] = (Math.random()-0.5)*140;
-      pVel[i] = (Math.random()-0.5)*0.08;
-      pVel[i+1] = (Math.random()-0.5)*0.08;
-      pVel[i+2] = (Math.random()-0.5)*0.08;
-    }
-    pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
-
-    const particles = new THREE.Points(
-      pGeo,
-      new THREE.PointsMaterial({
-        size: 0.28,
-        color: 0xaaffff,
-        transparent: true,
-        opacity: 0.75,
-        blending: THREE.AdditiveBlending,
-        depthTest: false
-      })
-    );
-    scene.add(particles);
-
-    // Resize
-    const resize = () => {
-      renderer.setSize(innerWidth, innerHeight);
-      camera.aspect = innerWidth / innerHeight;
-      camera.updateProjectionMatrix();
-    };
-    window.addEventListener("resize", resize);
-    resize();
+    const header = document.getElementById("site-header");
+    const progress = document.getElementById("progress");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let scrollTarget = 0;
     let scrollCurrent = 0;
-    window.addEventListener("scroll", () => {
-      scrollTarget = Math.min(1, scrollY / (document.body.scrollHeight - innerHeight));
-    }, {passive: true});
 
-    const clock = new THREE.Clock();
+    function updateScrollUI() {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const p = max > 0 ? window.scrollY / max : 0;
+      scrollTarget = Math.min(1, Math.max(0, p));
 
-    function animate() {
-      requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
-      const delta = clock.getDelta();
-
-      scrollCurrent += (scrollTarget - scrollCurrent) * 0.055;
-
-      // Câmera cinematográfica (estilo vídeo de IA)
-      const camProgress = scrollCurrent * 1.8;
-      camera.position.x = Math.sin(camProgress * 1.6) * (12 + camProgress * 18);
-      camera.position.y = 10 + Math.cos(camProgress * 0.9) * 9;
-      camera.position.z = 48 - camProgress * 65;
-      camera.lookAt(0, 4 + camProgress * 12, -30);
-
-      // Animações do core
-      core.rotation.y = t * 0.09 + scrollCurrent * 4.5;
-      mainCore.rotation.x = Math.sin(t * 0.3) * 0.15;
-
-      // Anéis
-      rings.forEach((r, i) => {
-        r.rotation.z = t * (0.6 + i * 0.3) + scrollCurrent * 5;
-      });
-
-      // Partículas com movimento orgânico
-      const posAttr = particles.geometry.attributes.position;
-      for (let i = 0; i < pCount * 3; i += 3) {
-        posAttr.array[i+1] += Math.sin(t * 2 + i) * 0.008; // movimento ondulado
+      if (progress) {
+        progress.style.transform = `scaleX(${scrollTarget})`;
       }
-      posAttr.needsUpdate = true;
-      particles.rotation.y = t * 0.04;
 
-      renderer.render(scene, camera);
+      if (header) {
+        header.classList.toggle("scrolled", window.scrollY > 30);
+      }
     }
 
-    animate();
+    window.addEventListener("scroll", updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    const revealEls = [...document.querySelectorAll("[data-reveal]")];
+    revealEls.forEach((el) => {
+      if (el.dataset.delay) {
+        el.style.transitionDelay = el.dataset.delay;
+      }
+    });
+
+    if (!reducedMotion) {
+      const revealIO = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealIO.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.16,
+          rootMargin: "0px 0px -8% 0px",
+        }
+      );
+
+      revealEls.forEach((el) => revealIO.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add("is-visible"));
+    }
+
+    const counters = [...document.querySelectorAll("[data-count]")];
+
+    function animateCounter(el) {
+      const end = parseFloat(el.dataset.count || "0");
+      const decimals = parseInt(el.dataset.decimals || "0", 10);
+      const suffix = el.dataset.suffix || "";
+
+      if (reducedMotion) {
+        el.textContent =
+          end.toLocaleString("pt-BR", {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+          }) + suffix;
+        return;
+      }
+
+      const duration = 1800;
+      const start = performance.now();
+
+      const tick = (now) => {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 4);
+        const value = end * eased;
+
+        el.textContent =
+          value.toLocaleString("pt-BR", {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+          }) + suffix;
+
+        if (p < 1) {
+          requestAnimationFrame(tick);
+        }
+      };
+
+      requestAnimationFrame(tick);
+    }
+
+    if (!reducedMotion) {
+      const counterIO = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              animateCounter(entry.target);
+              counterIO.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.4 }
+      );
+
+      counters.forEach((el) => counterIO.observe(el));
+    } else {
+      counters.forEach((el) => animateCounter(el));
+    }
+
+    const canHover = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+
+    if (canHover) {
+      document.querySelectorAll(".card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width;
+          const y = (e.clientY - r.top) / r.height;
+
+          card.style.setProperty("--mx", `${x * 100}%`);
+          card.style.setProperty("--my", `${y * 100}%`);
+
+          const rx = (y - 0.5) * -8;
+          const ry = (x - 0.5) * 10;
+
+          card.style.transform = `perspective(950px) translateY(-8px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
+      });
+    }
+
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      },
+      { passive: true }
+    );
+
+    async function init3D() {
+      const canvas = document.getElementById("bg3d");
+      if (!canvas) return;
+
+      let THREE;
+      try {
+        THREE = await import("three");
+      } catch (err) {
+        console.warn("Three.js não carregou.", err);
+        return;
+      }
+
+      const isMobile =
+        window.matchMedia("(max-width: 820px)").matches ||
+        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: !isMobile,
+          powerPreference: "high-performance",
+        });
+      } catch (err) {
+        console.warn("WebGL indisponível.", err);
+        canvas.style.display = "none";
+        return;
+      }
+
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.7 : 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.12;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x03050b);
+      scene.fog = new THREE.FogExp2(0x03050b, 0.016);
+
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        700
+      );
+      camera.position.set(0, 10, 52);
+
+      scene.add(new THREE.AmbientLight(0x88aaff, 0.55));
+
+      const key = new THREE.DirectionalLight(0x8fd8ff, 3);
+      key.position.set(24, 40, 26);
+      scene.add(key);
+
+      const rim = new THREE.DirectionalLight(0x37ffc8, 2.1);
+      rim.position.set(-32, 18, -28);
+      scene.add(rim);
+
+      const glowLight = new THREE.PointLight(0x49f3c7, 90, 120, 2);
+      glowLight.position.set(0, 10, 0);
+      scene.add(glowLight);
+
+      const core = new THREE.Group();
+      core.position.set(0, 8, 0);
+      scene.add(core);
+
+      const coreDetail = isMobile ? 2 : 4;
+      const wireDetail = isMobile ? 1 : 2;
+
+      const coreMesh = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(5.2, coreDetail),
+        new THREE.MeshStandardMaterial({
+          color: 0x071129,
+          emissive: 0x00e8c0,
+          emissiveIntensity: 1.35,
+          metalness: 0.95,
+          roughness: 0.18,
+        })
+      );
+      core.add(coreMesh);
+
+      const wire = new THREE.LineSegments(
+        new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(6.5, wireDetail)),
+        new THREE.LineBasicMaterial({
+          color: 0x7fb4ff,
+          transparent: true,
+          opacity: 0.16,
+        })
+      );
+      core.add(wire);
+
+      const glowSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(2.6, 32, 32),
+        new THREE.MeshBasicMaterial({
+          color: 0x8affea,
+          transparent: true,
+          opacity: 0.14,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        })
+      );
+      core.add(glowSphere);
+
+      const rings = [];
+      const torusSegments = isMobile ? 90 : 170;
+
+      for (let i = 0; i < 9; i++) {
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(8 + i * 1.7, 0.1, 18, torusSegments),
+          new THREE.MeshBasicMaterial({
+            color: i % 2 ? 0x6fb7ff : 0x43f1c8,
+            transparent: true,
+            opacity: 0.52,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          })
+        );
+        ring.rotation.x = Math.PI / 2 + i * 0.22;
+        ring.rotation.y = i * 0.16;
+        core.add(ring);
+        rings.push(ring);
+      }
+
+      const nodes = [];
+      const nodeGeo = new THREE.SphereGeometry(0.2, 14, 14);
+
+      for (let i = 0; i < 26; i++) {
+        const mat = new THREE.MeshBasicMaterial({
+          color: 0x9ff8ff,
+          transparent: true,
+          opacity: 0.9,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+
+        const mesh = new THREE.Mesh(nodeGeo, mat);
+        const radius = 9 + Math.random() * 15;
+        const speed = (0.12 + Math.random() * 0.55) * (Math.random() < 0.5 ? -1 : 1);
+        const phase = Math.random() * Math.PI * 2;
+        const y = (Math.random() - 0.5) * 16;
+
+        mesh.material.color.setHSL(0.45 + Math.random() * 0.16, 1, 0.72);
+
+        core.add(mesh);
+        nodes.push({ mesh, radius, speed, phase, y });
+      }
+
+      const grid = new THREE.GridHelper(420, 90, 0x3d69ff, 0x0a1330);
+      grid.position.y = -18;
+      grid.material.transparent = true;
+      grid.material.opacity = 0.22;
+      scene.add(grid);
+
+      const monolithCount = isMobile ? 34 : 72;
+      const monoliths = new THREE.InstancedMesh(
+        new THREE.BoxGeometry(2.4, 7.5, 1),
+        new THREE.MeshStandardMaterial({
+          color: 0x060b1c,
+          metalness: 0.92,
+          roughness: 0.34,
+          emissive: 0x081a3d,
+          emissiveIntensity: 0.5,
+        }),
+        monolithCount
+      );
+
+      const dummy = new THREE.Object3D();
+
+      for (let i = 0; i < monolithCount; i++) {
+        dummy.position.set(
+          (Math.random() - 0.5) * 130,
+          -14 + Math.random() * 46,
+          25 - Math.random() * 290
+        );
+        dummy.rotation.set(
+          0,
+          Math.random() * Math.PI,
+          (Math.random() - 0.5) * 0.22
+        );
+        dummy.scale.setScalar(0.55 + Math.random() * 1.7);
+        dummy.updateMatrix();
+        monoliths.setMatrixAt(i, dummy.matrix);
+      }
+
+      monoliths.instanceMatrix.needsUpdate = true;
+      scene.add(monoliths);
+
+      const pCount = isMobile ? 2200 : 6500;
+      const pGeo = new THREE.BufferGeometry();
+      const pPositions = new Float32Array(pCount * 3);
+      const pColors = new Float32Array(pCount * 3);
+      const color = new THREE.Color();
+
+      for (let i = 0; i < pCount; i++) {
+        const i3 = i * 3;
+        pPositions[i3] = (Math.random() - 0.5) * 170;
+        pPositions[i3 + 1] = (Math.random() - 0.5) * 95;
+        pPositions[i3 + 2] = 35 - Math.random() * 310;
+
+        color.setHSL(0.52 + Math.random() * 0.14, 1, 0.72);
+        pColors[i3] = color.r;
+        pColors[i3 + 1] = color.g;
+        pColors[i3 + 2] = color.b;
+      }
+
+      pGeo.setAttribute("position", new THREE.BufferAttribute(pPositions, 3));
+      pGeo.setAttribute("color", new THREE.BufferAttribute(pColors, 3));
+
+      const particles = new THREE.Points(
+        pGeo,
+        new THREE.PointsMaterial({
+          size: 0.24,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.82,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        })
+      );
+      scene.add(particles);
+
+      let composer = null;
+
+      try {
+        const [
+          { EffectComposer },
+          { RenderPass },
+          { UnrealBloomPass },
+          { OutputPass },
+        ] = await Promise.all([
+          import("three/addons/postprocessing/EffectComposer.js"),
+          import("three/addons/postprocessing/RenderPass.js"),
+          import("three/addons/postprocessing/UnrealBloomPass.js"),
+          import("three/addons/postprocessing/OutputPass.js"),
+        ]);
+
+        composer = new EffectComposer(renderer);
+
+        if (composer.setPixelRatio) {
+          composer.setPixelRatio(renderer.getPixelRatio());
+        }
+
+        composer.setSize(window.innerWidth, window.innerHeight);
+        composer.addPass(new RenderPass(scene, camera));
+
+        const bloom = new UnrealBloomPass(
+          new THREE.Vector2(window.innerWidth, window.innerHeight),
+          isMobile ? 0.55 : 0.92,
+          0.72,
+          0.12
+        );
+
+        composer.addPass(bloom);
+        composer.addPass(new OutputPass());
+      } catch (err) {
+        console.warn("Postprocessing/Bloom indisponível.", err);
+      }
+
+      function onResize() {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(w, h);
+
+        if (composer) {
+          composer.setSize(w, h);
+        }
+      }
+
+      window.addEventListener("resize", onResize);
+
+      const shots = [
+        {
+          pos: new THREE.Vector3(0, 10, 52),
+          look: new THREE.Vector3(0, 8, 0),
+          fog: 0.015,
+        },
+        {
+          pos: new THREE.Vector3(30, 12, 22),
+          look: new THREE.Vector3(0, 8, -10),
+          fog: 0.016,
+        },
+        {
+          pos: new THREE.Vector3(-28, 22, -22),
+          look: new THREE.Vector3(0, 10, -42),
+          fog: 0.018,
+        },
+        {
+          pos: new THREE.Vector3(0, 10, -72),
+          look: new THREE.Vector3(0, 12, -118),
+          fog: 0.022,
+        },
+        {
+          pos: new THREE.Vector3(0, 26, -142),
+          look: new THREE.Vector3(0, 18, -235),
+          fog: 0.026,
+        },
+      ];
+
+      const camPos = new THREE.Vector3();
+      const camLook = new THREE.Vector3();
+      const tempLook = new THREE.Vector3();
+
+      function updateCamera(p) {
+        const seg = p * (shots.length - 1);
+        const i = Math.min(Math.floor(seg), shots.length - 2);
+        const a = shots[i];
+        const b = shots[i + 1];
+        const t = THREE.MathUtils.clamp(seg - i, 0, 1);
+        const eased = t * t * (3 - 2 * t);
+
+        camPos.lerpVectors(a.pos, b.pos, eased);
+        camLook.lerpVectors(a.look, b.look, eased);
+        scene.fog.density = THREE.MathUtils.lerp(a.fog, b.fog, eased);
+      }
+
+      const clock = new THREE.Clock();
+      const cellSize = 420 / 90;
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const t = clock.getElapsedTime();
+
+        scrollCurrent += (scrollTarget - scrollCurrent) * 0.062;
+        mouseX += (targetMouseX - mouseX) * 0.045;
+        mouseY += (targetMouseY - mouseY) * 0.045;
+
+        updateCamera(scrollCurrent);
+
+        camera.position.copy(camPos);
+        camera.position.x += mouseX * 4.5;
+        camera.position.y += -mouseY * 2.8;
+        camera.position.z += Math.sin(t * 0.18) * 1.2;
+
+        tempLook.copy(camLook);
+        tempLook.x += mouseX * 2.2;
+        tempLook.y += -mouseY * 1.4;
+        camera.lookAt(tempLook);
+
+        core.position.y = 8 + Math.sin(t * 0.7) * 0.8;
+        core.rotation.y = t * 0.1 + scrollCurrent * 5.2;
+        core.rotation.x = Math.sin(t * 0.22) * 0.08;
+
+        coreMesh.rotation.x = t * 0.16;
+        coreMesh.rotation.z = t * 0.08;
+
+        const pulse = 1 + Math.sin(t * 1.25) * 0.02 + scrollCurrent * 0.14;
+        coreMesh.scale.setScalar(pulse);
+        glowSphere.scale.setScalar(pulse * 1.18);
+
+        glowLight.position.copy(core.position);
+        glowLight.intensity = 70 + Math.sin(t * 2.1) * 18 + scrollCurrent * 40;
+
+        wire.rotation.y = -t * 0.06;
+
+        rings.forEach((r, i) => {
+          r.rotation.z =
+            t * (0.16 + i * 0.05) * (i % 2 ? 1 : -1) + scrollCurrent * 2.8;
+          r.rotation.x = Math.PI / 2 + i * 0.22 + Math.sin(t * 0.2 + i) * 0.08;
+        });
+
+        nodes.forEach((n) => {
+          const a = t * n.speed + n.phase;
+          n.mesh.position.set(
+            Math.cos(a) * n.radius,
+            n.y + Math.sin(t * 0.8 + n.phase) * 1.6,
+            Math.sin(a) * n.radius
+          );
+        });
+
+        particles.rotation.y = t * 0.02 + scrollCurrent * 0.45;
+        particles.position.y = Math.sin(t * 0.35) * 1.6;
+
+        grid.position.z = (t * 7 + scrollCurrent * 190) % cellSize;
+        monoliths.rotation.y = Math.sin(t * 0.03) * 0.02;
+
+        if (composer) {
+          composer.render();
+        } else {
+          renderer.render(scene, camera);
+        }
+      }
+
+      animate();
+    }
+
+    init3D();
   </script>
 </body>
-</html>
+  </html>
