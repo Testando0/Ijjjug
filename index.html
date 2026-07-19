@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>3D Scroll (Imagens)</title>
+  <style>
+    :root{
+      --bg0:#050711;
+      --bg1:#070a14;
+      --ink:#eaf0ff;
+      --muted:rgba(234,240,255,.78);
+      --glass:rgba(15,23,49,.44);
+      --border:rgba(255,255,255,.10);
+      --brand:#76b7ff;
+      --brand2:#2ef2a5;
+      --radius:18px;
+      --shadow: 0 22px 70px rgba(0,0,0,.45);
+    }
+
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* Fundo 3D */
+    #bg3d{
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      display:block;
+      pointer-events:none;
+    }
+
+    /* Camadas acima */
+    .app{
+      position: relative;
+      z-index: 1;
+      min-height: 280vh; /* aumenta scroll */
+    }
+
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(5,7,17,.55);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .topbar{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 160px;
+    }
+    .logo{
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(118,183,255,.95), rgba(46,242,165,.85));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 16px 40px rgba(118,183,255,.22);
+      position: relative;
+      overflow: hidden;
+    }
+    .logo::after{
+      content:"";
+      position:absolute; inset:-35% -35%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.65), transparent 45%);
+      transform: rotate(18deg);
+    }
+    .brand h1{
+      margin:0;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      line-height: 1.1;
+    }
+    .brand p{
+      margin:2px 0 0;
+      font-size: 12px;
+      color: rgba(234,240,255,.72);
+      line-height: 1.1;
+    }
+    .pill{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,49,.38);
+      padding: 8px 10px;
+      border-radius: 999px;
+      color: rgba(234,240,255,.78);
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .dot{
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--brand2);
+      box-shadow: 0 0 0 4px rgba(46,242,165,.12);
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .hero{
+      padding: 20px 0 10px;
+    }
+    .kicker{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .badge{
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(15,23,49,.35);
+      color: rgba(234,240,255,.82);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .title{
+      font-size: clamp(26px, 7vw, 50px);
+      font-weight: 950;
+      margin: 0;
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      text-shadow: 0 18px 70px rgba(118,183,255,.16);
+    }
+    .subtitle{
+      margin-top: 10px;
+      color: rgba(234,240,255,.78);
+      font-size: 14px;
+      max-width: 62ch;
+      line-height: 1.45;
+    }
+
+    .gallery{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 760px){
+      .gallery{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .card{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,49,.35);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+
+      /* entrada suave */
+      transform: translateY(18px);
+      opacity: 0;
+      transition: transform 650ms ease, opacity 650ms ease;
+    }
+    .card.in{
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .media{
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+    }
+
+    /* Camada de “vidro” */
+    .media::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(600px 220px at 20% 0%, rgba(118,183,255,.16), transparent 55%),
+                  radial-gradient(500px 240px at 85% 15%, rgba(46,242,165,.12), transparent 55%),
+                  linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.35));
+      pointer-events:none;
+    }
+
+    /* Imagem com zoom parallax */
+    .media img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04) translateZ(0);
+      transition: transform 250ms ease;
+      display:block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    /* Ajuste opcional para cards verticais */
+    .media.tall{ aspect-ratio: 9/16; }
+
+    .pad{
+      padding: 12px;
+    }
+    .card h3{
+      margin: 0 0 6px;
+      font-size: 15px;
+      letter-spacing: .1px;
+      font-weight: 850;
+    }
+    .card p{
+      margin: 0;
+      color: rgba(234,240,255,.76);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .chips{
+      margin-top: 10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+    }
+    .chip{
+      font-size: 12px;
+      color: rgba(169,180,218,.96);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(7,10,20,.22);
+    }
+
+    footer{
+      padding: 28px 14px 38px;
+      color: rgba(234,240,255,.65);
+      text-align:center;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg3d"></canvas>
+
+  <div class="app">
+    <header>
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>NVIDIA • 3D Scroll</h1>
+            <p>Mobile-first • Imagens • Fundo animado</p>
+          </div>
+        </div>
+        <div class="pill"><span class="dot" aria-hidden="true"></span><span>scroll-synced</span></div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <section class="hero">
+        <div class="kicker">
+          <span class="badge">3D Depth</span>
+          <span class="badge">Ray Tracing Look</span>
+          <span class="badge">Mobile Performance</span>
+        </div>
+        <h2 class="title">Imagens que “flutuam” num mundo 3D</h2>
+        <div class="subtitle">
+          Fundo com partículas/grade e câmera reagindo ao scroll. As imagens fazem zoom/parallax para dar sensação 3D.
+          Troque as imagens pelos seus links.
+        </div>
+      </section>
+
+      <section class="gallery" aria-label="Galeria de imagens">
+        <!-- Card 1 -->
+        <article class="card" data-reveal>
+          <div class="media">
+            <img
+              alt="NVIDIA AI / GPU (substitua)"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1400&q=70"
+            />
+          </div>
+          <div class="pad">
+            <h3>GPU Acceleration</h3>
+            <p>Imagem com brilho e profundidade. Troque por uma arte NVIDIA/IA que você tenha direito.</p>
+            <div class="chips">
+              <span class="chip">GPU</span><span class="chip">AI</span><span class="chip">Depth</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" data-reveal>
+          <div class="media tall">
+            <img
+              alt="Computação / Datacenter (substitua)"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=70"
+            />
+          </div>
+          <div class="pad">
+            <h3>Datacenter Motion</h3>
+            <p>Versão vertical (9:16) mantendo o mesmo estilo mobile.</p>
+            <div class="chips">
+              <span class="chip">Cloud</span><span class="chip">Scale</span><span class="chip">Infra</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" data-reveal>
+          <div class="media">
+            <img
+              alt="3D / render look (substitua)"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1526378722484-bd91d7c7b7f2?auto=format&fit=crop&w=1400&q=70"
+            />
+          </div>
+          <div class="pad">
+            <h3>Ray Tracing Look</h3>
+            <p>O fundo 3D acompanha o scroll, e a imagem faz zoom suave.</p>
+            <div class="chips">
+              <span class="chip">Lighting</span><span class="chip">Ray</span><span class="chip">3D</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card" data-reveal>
+          <div class="media">
+            <img
+              alt="Robótica / tecnologia (substitua)"
+              loading="lazy"
+              src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=70"
+            />
+          </div>
+          <div class="pad">
+            <h3>Robotics & Simulation</h3>
+            <p>Card com chips e layout consistente com o estilo do fundo.</p>
+            <div class="chips">
+              <span class="chip">Robotics</span><span class="chip">Sim</span><span class="chip">AI</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <footer>
+      Sem vídeo • Fundo 3D responsivo • Troque os <code>src</code> das imagens pelos seus links.
+    </footer>
+  </div>
+
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+    const canvas = document.getElementById("bg3d");
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x070a14, 0.06);
+
+    const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 240);
+    camera.position.set(0, 0, 8);
+
+    // Luz
+    const key = new THREE.DirectionalLight(0x79c6ff, 1.1);
+    key.position.set(5, 4, 3);
+    scene.add(key);
+
+    const fill = new THREE.DirectionalLight(0x2ef2a5, 0.6);
+    fill.position.set(-5, 2, 2);
+    scene.add(fill);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.22);
+    scene.add(ambient);
+
+    // Núcleo (objeto 3D central)
+    const core = new THREE.Group();
+    scene.add(core);
+
+    const coreGeo = new THREE.TorusKnotGeometry(1.0, 0.34, 160, 18);
+    const coreMat = new THREE.MeshStandardMaterial({
+      color: 0x76b7ff,
+      metalness: 0.6,
+      roughness: 0.25,
+      emissive: 0x2ef2a5,
+      emissiveIntensity: 0.18
+    });
+
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    core.add(coreMesh);
+
+    const ringGeo = new THREE.TorusGeometry(1.85, 0.02, 18, 140);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x2ef2a5, transparent: true, opacity: 0.35 });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI * 0.5;
+    core.add(ring);
+
+    // Partículas volumétricas
+    const isMobile = window.innerWidth < 760;
+    const COUNT = isMobile ? 950 : 1500;
+
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(COUNT * 3);
+    const col = new Float32Array(COUNT * 3);
+
+    const cA = new THREE.Color(0x76b7ff);
+    const cB = new THREE.Color(0x2ef2a5);
+    const cC = new THREE.Color(0x9b7bff);
+
+    for (let i = 0; i < COUNT; i++) {
+      const i3 = i * 3;
+
+      pos[i3 + 0] = (Math.random() - 0.5) * 10;
+      pos[i3 + 1] = (Math.random() - 0.5) * 7;
+      pos[i3 + 2] = (Math.random() - 0.5) * 16;
+
+      const t = Math.random();
+      const u = Math.random();
+
+      const base = cA.clone().lerp(cB, t);
+      const final = base.lerp(cC, u * (isMobile ? 0.35 : 0.55));
+
+      col[i3 + 0] = final.r;
+      col[i3 + 1] = final.g;
+      col[i3 + 2] = final.b;
+    }
+
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+
+    const pointsMat = new THREE.PointsMaterial({
+      size: isMobile ? 0.055 : 0.045,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.86
+    });
+
+    const points = new THREE.Points(geo, pointsMat);
+    scene.add(points);
+
+    // Grade “no chão”
+    const grid = new THREE.GridHelper(16, 28, 0x2ef2a5, 0x76b7ff);
+    grid.material.opacity = 0.18;
+    grid.material.transparent = true;
+    grid.position.y = -2.3;
+    grid.position.z = -3.0;
+    grid.rotation.x = Math.PI * 0.08;
+    scene.add(grid);
+
+    // Resize
+    function resize(){
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", resize, { passive: true });
+    resize();
+
+    // Scroll-synced
+    let target = 0;
+    let current = 0;
+
+    function onScroll(){
+      const max = Math.max(1, document.body.scrollHeight - window.innerHeight);
+      target = (window.scrollY || 0) / max; // 0..1
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // Reveal dos cards
+    const revealEls = Array.from(document.querySelectorAll("[data-reveal]"));
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) e.target.classList.add("in");
+    }, { threshold: 0.16 });
+    revealEls.forEach(el => io.observe(el));
+
+    // Parallax das imagens
+    const mediaImgs = Array.from(document.querySelectorAll(".media img"));
+    function updateImgParallax(){
+      const top = window.scrollY || 0;
+      // limite para não exagerar
+      const strength = isMobile ? 0.18 : 0.12;
+
+      for (const img of mediaImgs){
+        const r = img.getBoundingClientRect();
+        // Quanto o elemento está “perto do centro” da tela
+        const center = (r.top + r.height * 0.5) / window.innerHeight; // 0..1 ~ relativo
+        const z = (0.5 - center) * strength;
+
+        // Zoom suave
+        const base = 1.04;
+        img.style.transform = `scale(${base + Math.abs(z)}) translateY(${z * 26}px)`;
+      }
+    }
+
+    window.addEventListener("scroll", updateImgParallax, { passive: true });
+    updateImgParallax();
+
+    const clock = new THREE.Clock();
+    function animate(){
+      requestAnimationFrame(animate);
+
+      const speed = isMobile ? 0.085 : 0.065;
+      current += (target - current) * speed;
+
+      const t = clock.getElapsedTime();
+      const p = current;
+
+      // câmera reage ao scroll + movimento orgânico
+      camera.position.x = Math.sin(p * 1.25 + t * 0.18) * 0.35;
+      camera.position.y = Math.cos(p * 0.95 + t * 0.12) * 0.18;
+      camera.lookAt(0, 0.35, 0);
+
+      // núcleo
+      core.rotation.y = t * 0.22 + p * 2.2;
+      core.rotation.x = Math.sin(t * 0.35) * 0.22 + p * 0.18;
+      coreMesh.scale.setScalar(1 + p * 0.10);
+
+      coreMat.emissiveIntensity = 0.10 + p * 0.45;
+
+      // partículas
+      points.rotation.y = t * 0.10 + p * 2.0;
+      points.rotation.x = Math.sin(t * 0.25) * 0.12 + p * 0.55;
+      points.position.z = p * -2.2;
+
+      // grade acompanha
+      grid.rotation.z = p * 0.25 + Math.sin(t * 0.12) * 0.05;
+      grid.position.y = -2.3 + p * 0.45;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>
