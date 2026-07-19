@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>3D Scroll (Imagens)</title>
+  <title>A Evolução da NVIDIA</title>
   <style>
     :root{
       --bg0:#050711;
@@ -42,7 +42,7 @@
     .app{
       position: relative;
       z-index: 1;
-      min-height: 280vh; /* aumenta scroll */
+      min-height: 320vh; /* mais espaço para scroll */
     }
 
     header{
@@ -124,7 +124,7 @@
     }
 
     .hero{
-      padding: 20px 0 10px;
+      padding: 20px 0 30px;
     }
     .kicker{
       display:flex;
@@ -142,7 +142,7 @@
       font-weight: 700;
     }
     .title{
-      font-size: clamp(26px, 7vw, 50px);
+      font-size: clamp(28px, 7.5vw, 54px);
       font-weight: 950;
       margin: 0;
       letter-spacing: -0.03em;
@@ -150,10 +150,10 @@
       text-shadow: 0 18px 70px rgba(118,183,255,.16);
     }
     .subtitle{
-      margin-top: 10px;
+      margin-top: 14px;
       color: rgba(234,240,255,.78);
-      font-size: 14px;
-      max-width: 62ch;
+      font-size: 15.5px;
+      max-width: 68ch;
       line-height: 1.45;
     }
 
@@ -161,7 +161,7 @@
       margin-top: 16px;
       display:grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 18px;
     }
     @media (min-width: 760px){
       .gallery{ grid-template-columns: 1fr 1fr; }
@@ -175,9 +175,9 @@
       overflow:hidden;
 
       /* entrada suave */
-      transform: translateY(18px);
+      transform: translateY(28px);
       opacity: 0;
-      transition: transform 650ms ease, opacity 650ms ease;
+      transition: transform 750ms cubic-bezier(0.23, 1, 0.32, 1), opacity 750ms ease;
     }
     .card.in{
       transform: translateY(0);
@@ -192,48 +192,46 @@
       overflow:hidden;
     }
 
-    /* Camada de “vidro” */
+    /* Camada de vidro aprimorada */
     .media::after{
       content:"";
       position:absolute; inset:0;
-      background: radial-gradient(600px 220px at 20% 0%, rgba(118,183,255,.16), transparent 55%),
-                  radial-gradient(500px 240px at 85% 15%, rgba(46,242,165,.12), transparent 55%),
-                  linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.35));
+      background: radial-gradient(620px 240px at 18% 8%, rgba(118,183,255,.22), transparent 58%),
+                  radial-gradient(520px 260px at 82% 12%, rgba(46,242,165,.18), transparent 58%),
+                  linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.42));
       pointer-events:none;
     }
 
-    /* Imagem com zoom parallax */
     .media img{
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transform: scale(1.04) translateZ(0);
-      transition: transform 250ms ease;
+      transform: scale(1.06) translateZ(0);
+      transition: transform 380ms cubic-bezier(0.23, 1, 0.32, 1);
       display:block;
-      filter: saturate(1.05) contrast(1.02);
+      filter: saturate(1.08) contrast(1.04);
     }
 
-    /* Ajuste opcional para cards verticais */
     .media.tall{ aspect-ratio: 9/16; }
 
     .pad{
-      padding: 12px;
+      padding: 14px;
     }
     .card h3{
-      margin: 0 0 6px;
-      font-size: 15px;
-      letter-spacing: .1px;
+      margin: 0 0 8px;
+      font-size: 16.5px;
+      letter-spacing: .08px;
       font-weight: 850;
     }
     .card p{
       margin: 0;
-      color: rgba(234,240,255,.76);
-      font-size: 13px;
-      line-height: 1.35;
+      color: rgba(234,240,255,.78);
+      font-size: 13.5px;
+      line-height: 1.42;
     }
 
     .chips{
-      margin-top: 10px;
+      margin-top: 12px;
       display:flex;
       flex-wrap:wrap;
       gap: 8px;
@@ -242,16 +240,25 @@
       font-size: 12px;
       color: rgba(169,180,218,.96);
       border: 1px solid rgba(255,255,255,.12);
-      padding: 7px 10px;
+      padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(7,10,20,.22);
+      background: rgba(7,10,20,.26);
+    }
+
+    .section-title{
+      font-size: 22px;
+      font-weight: 800;
+      margin: 60px 0 20px;
+      letter-spacing: -.02em;
+      color: var(--brand);
     }
 
     footer{
-      padding: 28px 14px 38px;
+      padding: 38px 14px 60px;
       color: rgba(234,240,255,.65);
       text-align:center;
-      font-size: 12px;
+      font-size: 13px;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -264,8 +271,8 @@
         <div class="brand">
           <div class="logo" aria-hidden="true"></div>
           <div>
-            <h1>NVIDIA • 3D Scroll</h1>
-            <p>Mobile-first • Imagens • Fundo animado</p>
+            <h1>NVIDIA</h1>
+            <p>A evolução que mudou o mundo</p>
           </div>
         </div>
         <div class="pill"><span class="dot" aria-hidden="true"></span><span>scroll-synced</span></div>
@@ -275,32 +282,34 @@
     <div class="wrap">
       <section class="hero">
         <div class="kicker">
-          <span class="badge">3D Depth</span>
-          <span class="badge">Ray Tracing Look</span>
-          <span class="badge">Mobile Performance</span>
+          <span class="badge">1993 • Fundação</span>
+          <span class="badge">GeForce • CUDA</span>
+          <span class="badge">IA • Omniverse</span>
         </div>
-        <h2 class="title">Imagens que “flutuam” num mundo 3D</h2>
+        <h2 class="title">Da gráfica aos limites da inteligência artificial</h2>
         <div class="subtitle">
-          Fundo com partículas/grade e câmera reagindo ao scroll. As imagens fazem zoom/parallax para dar sensação 3D.
-          Troque as imagens pelos seus links.
+          Uma jornada que começou com jogos e hoje impulsiona a revolução da IA, simulações e o futuro da computação. 
+          Role para acompanhar a evolução da NVIDIA.
         </div>
       </section>
 
-      <section class="gallery" aria-label="Galeria de imagens">
+      <h2 class="section-title">Marcos da Evolução</h2>
+
+      <section class="gallery" aria-label="Galeria da evolução NVIDIA">
         <!-- Card 1 -->
         <article class="card" data-reveal>
           <div class="media">
             <img
-              alt="NVIDIA AI / GPU (substitua)"
+              alt="Fundação NVIDIA"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1400&q=70"
+              src="https://picsum.photos/id/1015/1400/800"
             />
           </div>
           <div class="pad">
-            <h3>GPU Acceleration</h3>
-            <p>Imagem com brilho e profundidade. Troque por uma arte NVIDIA/IA que você tenha direito.</p>
+            <h3>1993 — A Fundação</h3>
+            <p>Jensen Huang, Chris Malachowsky e Curtis Priem fundam a NVIDIA na Califórnia com o sonho de revolucionar a computação gráfica.</p>
             <div class="chips">
-              <span class="chip">GPU</span><span class="chip">AI</span><span class="chip">Depth</span>
+              <span class="chip">Início</span><span class="chip">Gráficos</span><span class="chip">Visão</span>
             </div>
           </div>
         </article>
@@ -309,16 +318,16 @@
         <article class="card" data-reveal>
           <div class="media tall">
             <img
-              alt="Computação / Datacenter (substitua)"
+              alt="GeForce e jogos"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=70"
+              src="https://picsum.photos/id/201/800/1200"
             />
           </div>
           <div class="pad">
-            <h3>Datacenter Motion</h3>
-            <p>Versão vertical (9:16) mantendo o mesmo estilo mobile.</p>
+            <h3>1999 — GeForce e a Era dos Jogos</h3>
+            <p>O lançamento da GeForce 256 marca o início da era moderna dos jogos em 3D. A NVIDIA transforma PCs em máquinas de entretenimento poderoso.</p>
             <div class="chips">
-              <span class="chip">Cloud</span><span class="chip">Scale</span><span class="chip">Infra</span>
+              <span class="chip">Gaming</span><span class="chip">GeForce</span><span class="chip">3D</span>
             </div>
           </div>
         </article>
@@ -327,16 +336,16 @@
         <article class="card" data-reveal>
           <div class="media">
             <img
-              alt="3D / render look (substitua)"
+              alt="CUDA e computação paralela"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1526378722484-bd91d7c7b7f2?auto=format&fit=crop&w=1400&q=70"
+              src="https://picsum.photos/id/1016/1400/800"
             />
           </div>
           <div class="pad">
-            <h3>Ray Tracing Look</h3>
-            <p>O fundo 3D acompanha o scroll, e a imagem faz zoom suave.</p>
+            <h3>2006 — CUDA: Computação Geral</h3>
+            <p>A plataforma CUDA permite que GPUs sejam usadas para muito mais que gráficos — abre portas para IA, ciência e simulações de alta performance.</p>
             <div class="chips">
-              <span class="chip">Lighting</span><span class="chip">Ray</span><span class="chip">3D</span>
+              <span class="chip">CUDA</span><span class="chip">Paralelo</span><span class="chip">Ciência</span>
             </div>
           </div>
         </article>
@@ -345,16 +354,34 @@
         <article class="card" data-reveal>
           <div class="media">
             <img
-              alt="Robótica / tecnologia (substitua)"
+              alt="Deep Learning e IA"
               loading="lazy"
-              src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=70"
+              src="https://picsum.photos/id/1074/1400/800"
             />
           </div>
           <div class="pad">
-            <h3>Robotics & Simulation</h3>
-            <p>Card com chips e layout consistente com o estilo do fundo.</p>
+            <h3>2012–2020 — A Explosão da IA</h3>
+            <p>GPUs da NVIDIA se tornam o motor do deep learning. AlexNet, treinada em GPUs, marca o início da revolução da inteligência artificial.</p>
             <div class="chips">
-              <span class="chip">Robotics</span><span class="chip">Sim</span><span class="chip">AI</span>
+              <span class="chip">Deep Learning</span><span class="chip">Tensor Core</span><span class="chip">IA</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card" data-reveal>
+          <div class="media tall">
+            <img
+              alt="Omniverse e futuro"
+              loading="lazy"
+              src="https://picsum.photos/id/133/800/1200"
+            />
+          </div>
+          <div class="pad">
+            <h3>Hoje — Omniverse e o Futuro</h3>
+            <p>PLataformas como Omniverse, DLSS e tecnologias de ray tracing definem o presente e o futuro da simulação, criação de mundos e computação acelerada.</p>
+            <div class="chips">
+              <span class="chip">Omniverse</span><span class="chip">Ray Tracing</span><span class="chip">Futuro</span>
             </div>
           </div>
         </article>
@@ -362,7 +389,8 @@
     </div>
 
     <footer>
-      Sem vídeo • Fundo 3D responsivo • Troque os <code>src</code> das imagens pelos seus links.
+      Uma jornada visual pela história da NVIDIA.<br>
+      Role devagar para sentir o movimento completo do universo 3D.
     </footer>
   </div>
 
@@ -374,52 +402,57 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x070a14, 0.06);
+    scene.fog = new THREE.FogExp2(0x070a14, 0.055);
 
-    const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 240);
-    camera.position.set(0, 0, 8);
+    const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 280);
+    camera.position.set(0, 0.2, 9);
 
-    // Luz
-    const key = new THREE.DirectionalLight(0x79c6ff, 1.1);
-    key.position.set(5, 4, 3);
+    // Luzes aprimoradas
+    const key = new THREE.DirectionalLight(0x79c6ff, 1.25);
+    key.position.set(6, 5, 4);
     scene.add(key);
 
-    const fill = new THREE.DirectionalLight(0x2ef2a5, 0.6);
-    fill.position.set(-5, 2, 2);
+    const fill = new THREE.DirectionalLight(0x2ef2a5, 0.75);
+    fill.position.set(-6, 3, 3);
     scene.add(fill);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.22);
+    const rim = new THREE.DirectionalLight(0x9b7bff, 0.45);
+    rim.position.set(0, -4, -6);
+    scene.add(rim);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.25);
     scene.add(ambient);
 
-    // Núcleo (objeto 3D central)
+    // Núcleo central
     const core = new THREE.Group();
     scene.add(core);
 
-    const coreGeo = new THREE.TorusKnotGeometry(1.0, 0.34, 160, 18);
+    const coreGeo = new THREE.TorusKnotGeometry(1.05, 0.32, 180, 20, 3, 7);
     const coreMat = new THREE.MeshStandardMaterial({
       color: 0x76b7ff,
-      metalness: 0.6,
-      roughness: 0.25,
+      metalness: 0.72,
+      roughness: 0.18,
       emissive: 0x2ef2a5,
-      emissiveIntensity: 0.18
+      emissiveIntensity: 0.22
     });
 
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
     core.add(coreMesh);
 
-    const ringGeo = new THREE.TorusGeometry(1.85, 0.02, 18, 140);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x2ef2a5, transparent: true, opacity: 0.35 });
+    const ringGeo = new THREE.TorusGeometry(1.92, 0.018, 22, 160);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x2ef2a5, transparent: true, opacity: 0.42 });
     const ring = new THREE.Mesh(ringGeo, ringMat);
     ring.rotation.x = Math.PI * 0.5;
     core.add(ring);
 
-    // Partículas volumétricas
+    // Partículas mais densas e dinâmicas
     const isMobile = window.innerWidth < 760;
-    const COUNT = isMobile ? 950 : 1500;
+    const COUNT = isMobile ? 1200 : 2100;
 
     const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(COUNT * 3);
     const col = new Float32Array(COUNT * 3);
+    const sizes = new Float32Array(COUNT);
 
     const cA = new THREE.Color(0x76b7ff);
     const cB = new THREE.Color(0x2ef2a5);
@@ -427,42 +460,41 @@
 
     for (let i = 0; i < COUNT; i++) {
       const i3 = i * 3;
-
-      pos[i3 + 0] = (Math.random() - 0.5) * 10;
-      pos[i3 + 1] = (Math.random() - 0.5) * 7;
-      pos[i3 + 2] = (Math.random() - 0.5) * 16;
+      pos[i3 + 0] = (Math.random() - 0.5) * 14;
+      pos[i3 + 1] = (Math.random() - 0.5) * 9;
+      pos[i3 + 2] = (Math.random() - 0.5) * 22;
 
       const t = Math.random();
-      const u = Math.random();
-
-      const base = cA.clone().lerp(cB, t);
-      const final = base.lerp(cC, u * (isMobile ? 0.35 : 0.55));
-
+      const final = cA.clone().lerp(cB, t).lerp(cC, Math.random() * 0.6);
       col[i3 + 0] = final.r;
       col[i3 + 1] = final.g;
       col[i3 + 2] = final.b;
+
+      sizes[i] = Math.random() * 0.035 + 0.028;
     }
 
     geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+    geo.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
 
     const pointsMat = new THREE.PointsMaterial({
-      size: isMobile ? 0.055 : 0.045,
+      size: isMobile ? 0.058 : 0.048,
       vertexColors: true,
       transparent: true,
-      opacity: 0.86
+      opacity: 0.88,
+      depthTest: false
     });
 
     const points = new THREE.Points(geo, pointsMat);
     scene.add(points);
 
-    // Grade “no chão”
-    const grid = new THREE.GridHelper(16, 28, 0x2ef2a5, 0x76b7ff);
-    grid.material.opacity = 0.18;
+    // Grade aprimorada
+    const grid = new THREE.GridHelper(18, 32, 0x2ef2a5, 0x76b7ff);
+    grid.material.opacity = 0.22;
     grid.material.transparent = true;
-    grid.position.y = -2.3;
-    grid.position.z = -3.0;
-    grid.rotation.x = Math.PI * 0.08;
+    grid.position.y = -2.8;
+    grid.position.z = -4;
+    grid.rotation.x = Math.PI * 0.12;
     scene.add(grid);
 
     // Resize
@@ -476,40 +508,36 @@
     window.addEventListener("resize", resize, { passive: true });
     resize();
 
-    // Scroll-synced
+    // Scroll
     let target = 0;
     let current = 0;
 
     function onScroll(){
       const max = Math.max(1, document.body.scrollHeight - window.innerHeight);
-      target = (window.scrollY || 0) / max; // 0..1
+      target = (window.scrollY || 0) / max;
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-    // Reveal dos cards
+    // Reveal
     const revealEls = Array.from(document.querySelectorAll("[data-reveal]"));
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) if (e.isIntersecting) e.target.classList.add("in");
-    }, { threshold: 0.16 });
+    }, { threshold: 0.18 });
     revealEls.forEach(el => io.observe(el));
 
-    // Parallax das imagens
+    // Parallax mais suave e forte
     const mediaImgs = Array.from(document.querySelectorAll(".media img"));
     function updateImgParallax(){
-      const top = window.scrollY || 0;
-      // limite para não exagerar
-      const strength = isMobile ? 0.18 : 0.12;
-
+      const scrollProgress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      
       for (const img of mediaImgs){
         const r = img.getBoundingClientRect();
-        // Quanto o elemento está “perto do centro” da tela
-        const center = (r.top + r.height * 0.5) / window.innerHeight; // 0..1 ~ relativo
-        const z = (0.5 - center) * strength;
-
-        // Zoom suave
-        const base = 1.04;
-        img.style.transform = `scale(${base + Math.abs(z)}) translateY(${z * 26}px)`;
+        const center = (r.top + r.height * 0.5) / window.innerHeight;
+        const offset = (0.5 - center) * (isMobile ? 0.22 : 0.14);
+        
+        const scale = 1.06 + Math.abs(offset) * 0.18;
+        img.style.transform = `scale(\( {scale}) translateY( \){offset * 38}px)`;
       }
     }
 
@@ -517,39 +545,43 @@
     updateImgParallax();
 
     const clock = new THREE.Clock();
+    
     function animate(){
       requestAnimationFrame(animate);
 
-      const speed = isMobile ? 0.085 : 0.065;
+      const delta = clock.getDelta();
+      const t = clock.getElapsedTime();
+      const speed = isMobile ? 0.092 : 0.068;
       current += (target - current) * speed;
 
-      const t = clock.getElapsedTime();
       const p = current;
 
-      // câmera reage ao scroll + movimento orgânico
-      camera.position.x = Math.sin(p * 1.25 + t * 0.18) * 0.35;
-      camera.position.y = Math.cos(p * 0.95 + t * 0.12) * 0.18;
-      camera.lookAt(0, 0.35, 0);
+      // Câmera mais imersiva
+      camera.position.x = Math.sin(p * 1.4 + t * 0.14) * 0.48;
+      camera.position.y = Math.cos(p * 0.9 + t * 0.09) * 0.32 + 0.15;
+      camera.position.z = 9 - p * 3.2;
+      camera.lookAt(0, 0.25 + p * 0.3, 0);
 
-      // núcleo
-      core.rotation.y = t * 0.22 + p * 2.2;
-      core.rotation.x = Math.sin(t * 0.35) * 0.22 + p * 0.18;
-      coreMesh.scale.setScalar(1 + p * 0.10);
+      // Núcleo dinâmico
+      core.rotation.y = t * 0.26 + p * 3.8;
+      core.rotation.x = Math.sin(t * 0.42) * 0.28 + p * 0.45;
+      coreMesh.scale.setScalar(1 + p * 0.22);
 
-      coreMat.emissiveIntensity = 0.10 + p * 0.45;
+      coreMat.emissiveIntensity = 0.18 + p * 0.68;
 
-      // partículas
-      points.rotation.y = t * 0.10 + p * 2.0;
-      points.rotation.x = Math.sin(t * 0.25) * 0.12 + p * 0.55;
-      points.position.z = p * -2.2;
+      // Partículas
+      points.rotation.y = t * 0.085 + p * 2.8;
+      points.rotation.x = Math.sin(t * 0.22) * 0.18 + p * 0.75;
+      points.position.z = p * -3.8;
 
-      // grade acompanha
-      grid.rotation.z = p * 0.25 + Math.sin(t * 0.12) * 0.05;
-      grid.position.y = -2.3 + p * 0.45;
+      // Grade
+      grid.rotation.z = p * 0.45 + Math.sin(t * 0.15) * 0.06;
+      grid.position.y = -2.8 + p * 0.9;
+      grid.position.z = -4 + p * -1.2;
 
       renderer.render(scene, camera);
     }
     animate();
   </script>
 </body>
-</html>
+  </html>
