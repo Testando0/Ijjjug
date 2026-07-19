@@ -6,55 +6,46 @@
   <title>A Evolução da NVIDIA</title>
   <style>
     :root{
-      --bg0:#050711;
-      --bg1:#070a14;
+      --bg0:#02040a;
+      --bg1:#0a0c1f;
       --ink:#eaf0ff;
-      --muted:rgba(234,240,255,.78);
-      --glass:rgba(15,23,49,.44);
-      --border:rgba(255,255,255,.10);
-      --brand:#76b7ff;
-      --brand2:#2ef2a5;
+      --muted:rgba(234,240,255,.8);
       --radius:18px;
-      --shadow: 0 22px 70px rgba(0,0,0,.45);
+      --shadow: 0 30px 90px rgba(0,0,0,.6);
     }
 
-    html, body { height: 100%; }
+    html, body { height: 100%; margin:0; overflow-x:hidden; }
     body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       background: linear-gradient(180deg, var(--bg0), var(--bg1));
       color: var(--ink);
-      overflow-x: hidden;
     }
 
     #bg3d{
       position: fixed;
       inset: 0;
       z-index: 0;
-      width: 100%;
-      height: 100%;
-      display:block;
-      pointer-events:none;
+      pointer-events: none;
     }
 
     .app{
       position: relative;
       z-index: 1;
-      min-height: 360vh;
+      min-height: 420vh;
     }
 
     header{
       position: sticky;
       top: 0;
-      z-index: 5;
-      backdrop-filter: blur(12px);
-      background: rgba(5,7,17,.62);
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      z-index: 10;
+      backdrop-filter: blur(20px);
+      background: rgba(2,4,10,0.75);
+      border-bottom: 1px solid rgba(118,183,255,0.12);
     }
     .topbar{
       max-width: 980px;
       margin: 0 auto;
-      padding: 12px 14px;
+      padding: 14px 16px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -62,183 +53,109 @@
     .brand{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
     }
     .logo{
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(118,183,255,.95), rgba(46,242,165,.85));
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 16px 40px rgba(118,183,255,.22);
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #76b7ff, #2ef2a5);
+      box-shadow: 0 0 30px rgba(118,183,255,0.6);
       position: relative;
-      overflow: hidden;
-    }
-    .logo::after{
-      content:"";
-      position:absolute; inset:-35% -35%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.65), transparent 45%);
-      transform: rotate(18deg);
     }
     .brand h1{
       margin:0;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
-      letter-spacing: .2px;
-    }
-    .brand p{
-      margin:2px 0 0;
-      font-size: 12px;
-      color: rgba(234,240,255,.72);
-    }
-    .pill{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(15,23,49,.38);
-      padding: 8px 10px;
-      border-radius: 999px;
-      color: rgba(234,240,255,.78);
-      font-size: 12px;
-      display:flex;
-      align-items:center;
-      gap: 8px;
-    }
-    .dot{
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--brand2);
-      box-shadow: 0 0 0 4px rgba(46,242,165,.12);
+      letter-spacing: 0.5px;
     }
 
     .wrap{
       max-width: 980px;
       margin: 0 auto;
-      padding: 14px;
+      padding: 20px 14px;
     }
 
     .hero{
-      padding: 20px 0 40px;
-    }
-    .kicker{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-bottom: 12px;
-    }
-    .badge{
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(15,23,49,.35);
-      color: rgba(234,240,255,.82);
-      font-size: 12px;
-      font-weight: 700;
+      padding: 60px 0 80px;
+      text-align: center;
     }
     .title{
-      font-size: clamp(29px, 8vw, 56px);
+      font-size: clamp(32px, 9vw, 68px);
       font-weight: 950;
-      margin: 0;
-      letter-spacing: -0.035em;
-      line-height: 1.02;
-      text-shadow: 0 20px 80px rgba(118,183,255,.22);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      background: linear-gradient(90deg, #76b7ff, #2ef2a5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .subtitle{
-      margin-top: 16px;
-      color: rgba(234,240,255,.8);
-      font-size: 16px;
-      max-width: 70ch;
-      line-height: 1.45;
+      max-width: 720px;
+      margin: 24px auto 0;
+      font-size: 17.5px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .section-title{
+      font-size: 26px;
+      font-weight: 800;
+      margin: 100px 0 30px;
+      color: #76b7ff;
+      letter-spacing: -0.02em;
     }
 
     .gallery{
-      margin-top: 20px;
-      display:grid;
+      display: grid;
       grid-template-columns: 1fr;
-      gap: 22px;
+      gap: 28px;
     }
-    @media (min-width: 760px){
-      .gallery{ grid-template-columns: 1fr 1fr; }
+    @media (min-width: 760px) {
+      .gallery { grid-template-columns: 1fr 1fr; }
     }
 
     .card{
       border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(15,23,49,.38);
+      background: rgba(15,23,49,0.45);
+      border: 1px solid rgba(118,183,255,0.15);
+      overflow: hidden;
       box-shadow: var(--shadow);
-      overflow:hidden;
-      transform: translateY(40px);
       opacity: 0;
-      transition: all 850ms cubic-bezier(0.23, 1, 0.32, 1);
+      transform: translateY(60px);
+      transition: all 1s cubic-bezier(0.23,1,0.32,1);
     }
     .card.in{
-      transform: translateY(0);
       opacity: 1;
+      transform: translateY(0);
     }
 
     .media{
+      height: 280px;
       position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #000;
-      overflow:hidden;
-    }
-    .media::after{
-      content:"";
-      position:absolute; inset:0;
-      background: radial-gradient(680px 280px at 15% 10%, rgba(118,183,255,.28), transparent 60%),
-                  radial-gradient(580px 300px at 80% 18%, rgba(46,242,165,.24), transparent 62%),
-                  linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.5));
-      pointer-events:none;
+      overflow: hidden;
     }
     .media img{
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 420ms cubic-bezier(0.23, 1, 0.32, 1);
+      transition: transform 0.6s ease;
+    }
+    .media:hover img{
+      transform: scale(1.08);
     }
 
     .pad{
-      padding: 16px;
+      padding: 20px;
     }
     .card h3{
-      margin: 0 0 9px;
-      font-size: 17px;
-      font-weight: 850;
+      margin: 0 0 10px;
+      font-size: 18px;
+      font-weight: 800;
     }
     .card p{
-      margin: 0;
-      color: rgba(234,240,255,.79);
-      font-size: 13.8px;
-      line-height: 1.45;
-    }
-
-    .chips{
-      margin-top: 14px;
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-    }
-    .chip{
-      font-size: 12.2px;
-      color: rgba(169,180,218,.96);
-      border: 1px solid rgba(255,255,255,.13);
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: rgba(7,10,20,.28);
-    }
-
-    .section-title{
-      font-size: 23px;
-      font-weight: 800;
-      margin: 70px 0 24px;
-      letter-spacing: -.03em;
-      color: var(--brand);
-    }
-
-    footer{
-      padding: 50px 14px 80px;
-      color: rgba(234,240,255,.68);
-      text-align:center;
-      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14.2px;
     }
   </style>
 </head>
@@ -249,271 +166,237 @@
     <header>
       <div class="topbar">
         <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <div>
-            <h1>NVIDIA</h1>
-            <p>A evolução que mudou o mundo</p>
-          </div>
+          <div class="logo"></div>
+          <h1>NVIDIA</h1>
         </div>
-        <div class="pill"><span class="dot" aria-hidden="true"></span><span>scroll-synced</span></div>
       </div>
     </header>
 
     <div class="wrap">
       <section class="hero">
-        <div class="kicker">
-          <span class="badge">1993 • 2026</span>
-          <span class="badge">Gráficos • IA • Futuro</span>
-        </div>
-        <h2 class="title">Da visão de 1993 aos limites da inteligência artificial</h2>
-        <div class="subtitle">
-          Uma jornada épica que transformou gráficos em supercomputação e hoje lidera a revolução da IA generativa. Role lentamente e mergulhe na evolução.
-        </div>
+        <h2 class="title">A REVOLUÇÃO QUE RECRIA O MUNDO</h2>
+        <p class="subtitle">
+          De uma pequena startup em 1993 até se tornar a força motriz da inteligência artificial, 
+          simulações quânticas e mundos virtuais. Uma jornada de pura inovação.
+        </p>
       </section>
 
-      <h2 class="section-title">A Jornada da NVIDIA</h2>
+      <h2 class="section-title">Cronologia da Evolução</h2>
 
       <section class="gallery">
         <article class="card" data-reveal>
-          <div class="media">
-            <img src="https://picsum.photos/id/1015/1400/800" alt="Fundação" loading="lazy"/>
-          </div>
+          <div class="media"><img src="https://picsum.photos/id/1015/1400/900" alt="1993" loading="lazy"></div>
           <div class="pad">
-            <h3>1993 — Fundação</h3>
-            <p>Três engenheiros visionários criam a NVIDIA com o objetivo de revolucionar os gráficos computacionais.</p>
-            <div class="chips"><span class="chip">Início</span><span class="chip">Visão</span></div>
+            <h3>1993 — O Início</h3>
+            <p>Jensen Huang funda a NVIDIA com o sonho de transformar a computação gráfica para sempre.</p>
           </div>
         </article>
 
         <article class="card" data-reveal>
-          <div class="media tall">
-            <img src="https://picsum.photos/id/201/800/1200" alt="GeForce" loading="lazy"/>
-          </div>
+          <div class="media"><img src="https://picsum.photos/id/201/1400/900" alt="GeForce" loading="lazy"></div>
           <div class="pad">
-            <h3>1999 — GeForce Revolution</h3>
-            <p>O lançamento da GeForce 256 muda para sempre os jogos em 3D e estabelece a NVIDIA como líder em GPUs.</p>
-            <div class="chips"><span class="chip">Gaming</span><span class="chip">3D</span></div>
+            <h3>1999 — GeForce e Gaming</h3>
+            <p>A GeForce 256 inaugura a era dos gráficos 3D acelerados por hardware nos PCs.</p>
           </div>
         </article>
 
         <article class="card" data-reveal>
-          <div class="media">
-            <img src="https://picsum.photos/id/1016/1400/800" alt="CUDA" loading="lazy"/>
-          </div>
+          <div class="media"><img src="https://picsum.photos/id/1016/1400/900" alt="CUDA" loading="lazy"></div>
           <div class="pad">
-            <h3>2006 — CUDA e Computação Paralela</h3>
-            <p>A plataforma CUDA libera o poder das GPUs para tarefas científicas, simulações e o início da era da IA.</p>
-            <div class="chips"><span class="chip">CUDA</span><span class="chip">Paralelo</span></div>
+            <h3>2006 — CUDA</h3>
+            <p>Nasce a plataforma que permite programar GPUs para qualquer tarefa computacional.</p>
           </div>
         </article>
 
         <article class="card" data-reveal>
-          <div class="media tall">
-            <img src="https://picsum.photos/id/1074/800/1200" alt="IA" loading="lazy"/>
-          </div>
+          <div class="media"><img src="https://picsum.photos/id/1074/1400/900" alt="IA" loading="lazy"></div>
           <div class="pad">
-            <h3>2012–2023 — Explosão da IA</h3>
-            <p>Tensor Cores e GPUs da NVIDIA se tornam o padrão ouro para treinamento de modelos de inteligência artificial.</p>
-            <div class="chips"><span class="chip">Deep Learning</span><span class="chip">Tensor</span></div>
-          </div>
-        </article>
-
-        <article class="card" data-reveal>
-          <div class="media">
-            <img src="https://picsum.photos/id/133/1400/800" alt="Omniverse" loading="lazy"/>
-          </div>
-          <div class="pad">
-            <h3>Hoje e Amanhã — Omniverse</h3>
-            <p>Ray Tracing em tempo real, Omniverse e computação acelerada definem o futuro da criação digital e simulações do mundo real.</p>
-            <div class="chips"><span class="chip">Ray Tracing</span><span class="chip">Futuro</span></div>
+            <h3>2012–2024 — Domínio da IA</h3>
+            <p>Tensor Cores transformam as GPUs em aceleradores de treinamento de redes neurais.</p>
           </div>
         </article>
       </section>
     </div>
-
-    <footer>
-      Role devagar para sentir toda a potência do universo NVIDIA.
-    </footer>
   </div>
 
   <script type="module">
     import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
 
     const canvas = document.getElementById("bg3d");
-    const renderer = new THREE.WebGLRenderer({ 
-      canvas, 
-      antialias: true, 
-      alpha: true, 
-      powerPreference: "high-performance" 
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.2));
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.5));
+    renderer.shadowMap.enabled = false;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0a0e1f, 0.038);
+    scene.fog = new THREE.FogExp2(0x05070f, 0.022);
 
-    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 300);
-    camera.position.set(0, 1.2, 12);
+    const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 400);
+    camera.position.set(0, 3, 22);
 
-    // Iluminação dramática
-    const keyLight = new THREE.DirectionalLight(0x88ccff, 1.8);
-    keyLight.position.set(8, 12, 10);
-    scene.add(keyLight);
+    // Iluminação épica
+    const ambient = new THREE.AmbientLight(0x6688ff, 0.4);
+    scene.add(ambient);
 
-    const fillLight = new THREE.DirectionalLight(0x22ffaa, 0.9);
-    fillLight.position.set(-10, 6, 8);
-    scene.add(fillLight);
+    const key = new THREE.DirectionalLight(0x88ddff, 2.2);
+    key.position.set(15, 25, 18);
+    scene.add(key);
 
-    const rimLight = new THREE.DirectionalLight(0xbb77ff, 1.1);
-    rimLight.position.set(0, -8, -12);
-    scene.add(rimLight);
+    const accent = new THREE.DirectionalLight(0x22ffcc, 1.6);
+    accent.position.set(-20, 12, 15);
+    scene.add(accent);
 
-    scene.add(new THREE.AmbientLight(0x445577, 0.35));
+    const rim = new THREE.DirectionalLight(0xff77cc, 1.4);
+    rim.position.set(8, -15, -20);
+    scene.add(rim);
 
-    // === OBJETOS PRINCIPAIS ===
-    const coreGroup = new THREE.Group();
-    scene.add(coreGroup);
+    // === CENÁRIO PRINCIPAL ===
+    const universe = new THREE.Group();
+    scene.add(universe);
 
-    // Núcleo principal mais impressionante
-    const coreGeo = new THREE.TorusKnotGeometry(1.4, 0.38, 240, 32, 3, 8);
+    // Central Energy Core (substituindo a bola simples)
+    const core = new THREE.Group();
+    universe.add(core);
+
+    const icosa = new THREE.IcosahedronGeometry(2.8, 2);
     const coreMat = new THREE.MeshPhongMaterial({
-      color: 0x76b7ff,
-      shininess: 92,
+      color: 0x4488ff,
+      emissive: 0x00ffaa,
+      shininess: 100,
       specular: 0xffffff,
-      emissive: 0x2ef2a5,
-      emissiveIntensity: 0.35,
-      metalness: 0.9,
-      roughness: 0.1
+      emissiveIntensity: 0.8
     });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    coreGroup.add(coreMesh);
+    const coreMesh = new THREE.Mesh(icosa, coreMat);
+    core.add(coreMesh);
 
-    // Anéis orbitais
-    const rings = [];
-    for (let i = 0; i < 4; i++) {
-      const ringGeo = new THREE.TorusGeometry(2.2 + i * 0.6, 0.025, 24, 180);
-      const ringMat = new THREE.MeshBasicMaterial({
-        color: i % 2 === 0 ? 0x2ef2a5 : 0x76b7ff,
+    // Camadas internas
+    const innerSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1.8, 48, 48),
+      new THREE.MeshBasicMaterial({ color: 0x2ef2a5, transparent: true, opacity: 0.25 })
+    );
+    core.add(innerSphere);
+
+    // Anéis de energia
+    const energyRings = [];
+    for (let i = 0; i < 5; i++) {
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(4.2 + i * 0.9, 0.035, 32, 120),
+        new THREE.MeshBasicMaterial({
+          color: i % 2 === 0 ? 0x76b7ff : 0x2ef2a5,
+          transparent: true,
+          opacity: 0.45 - i * 0.06,
+          blending: THREE.AdditiveBlending
+        })
+      );
+      ring.rotation.x = Math.random() * Math.PI;
+      core.add(ring);
+      energyRings.push(ring);
+    }
+
+    // Satélites orbitando (estilo "chips")
+    const satellites = [];
+    for (let i = 0; i < 12; i++) {
+      const sat = new THREE.Mesh(
+        new THREE.BoxGeometry(0.8, 0.12, 1.4),
+        new THREE.MeshPhongMaterial({ color: 0x99ccff, emissive: 0x3366aa, shininess: 30 })
+      );
+      sat.userData = { angle: i * (Math.PI * 2 / 12), speed: 0.3 + Math.random() * 0.8, radius: 6 + Math.random() * 4 };
+      satellites.push(sat);
+      universe.add(sat);
+    }
+
+    // Campo de partículas estelar denso
+    const starCount = 6200;
+    const starGeo = new THREE.BufferGeometry();
+    const starPos = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
+
+    for (let i = 0; i < starCount * 3; i += 3) {
+      const radius = 40 + Math.random() * 80;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+
+      starPos[i]     = radius * Math.sin(phi) * Math.cos(theta);
+      starPos[i + 1] = radius * Math.sin(phi) * Math.sin(theta) - 10;
+      starPos[i + 2] = radius * Math.cos(phi);
+
+      const brightness = Math.random();
+      starColors[i]     = 0.7 + brightness * 0.3;
+      starColors[i + 1] = 0.8 + brightness * 0.2;
+      starColors[i + 2] = 1;
+    }
+
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+
+    const stars = new THREE.Points(
+      starGeo,
+      new THREE.PointsMaterial({
+        size: 0.085,
+        vertexColors: true,
         transparent: true,
-        opacity: 0.35 - i * 0.04
-      });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.rotation.x = Math.PI * (0.4 + i * 0.15);
-      coreGroup.add(ring);
-      rings.push(ring);
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending,
+        depthTest: false
+      })
+    );
+    scene.add(stars);
+
+    // Fluxo de dados (partículas rápidas)
+    const dataCount = 1800;
+    const dataGeo = new THREE.BufferGeometry();
+    const dataPos = new Float32Array(dataCount * 3);
+    for (let i = 0; i < dataCount * 3; i += 3) {
+      dataPos[i] = (Math.random() - 0.5) * 60;
+      dataPos[i+1] = (Math.random() - 0.5) * 40;
+      dataPos[i+2] = (Math.random() - 0.5) * 80;
     }
+    dataGeo.setAttribute('position', new THREE.BufferAttribute(dataPos, 3));
 
-    // Partículas principais (mais densas e brilhantes)
-    const COUNT = window.innerWidth < 760 ? 2800 : 4200;
-    const positions = new Float32Array(COUNT * 3);
-    const colors = new Float32Array(COUNT * 3);
-    const sizes = new Float32Array(COUNT);
+    const dataPoints = new THREE.Points(
+      dataGeo,
+      new THREE.PointsMaterial({
+        size: 0.18,
+        color: 0x44ffdd,
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending
+      })
+    );
+    scene.add(dataPoints);
 
-    const c1 = new THREE.Color(0x76b7ff);
-    const c2 = new THREE.Color(0x2ef2a5);
-    const c3 = new THREE.Color(0x9988ff);
-
-    for (let i = 0; i < COUNT; i++) {
-      const i3 = i * 3;
-      positions[i3]     = (Math.random() - 0.5) * 26;
-      positions[i3 + 1] = (Math.random() - 0.5) * 18;
-      positions[i3 + 2] = (Math.random() - 0.5) * 32;
-
-      const mix = Math.random();
-      const finalColor = c1.clone().lerp(c2, mix).lerp(c3, Math.random() * 0.5);
-      colors[i3] = finalColor.r;
-      colors[i3 + 1] = finalColor.g;
-      colors[i3 + 2] = finalColor.b;
-
-      sizes[i] = Math.random() * 0.065 + 0.035;
-    }
-
-    const pointsGeo = new THREE.BufferGeometry();
-    pointsGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    pointsGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-    pointsGeo.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
-
-    const pointsMat = new THREE.PointsMaterial({
-      size: 0.065,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.92,
-      depthTest: false,
-      blending: THREE.AdditiveBlending
-    });
-
-    const mainPoints = new THREE.Points(pointsGeo, pointsMat);
-    scene.add(mainPoints);
-
-    // Partículas secundárias (mais rápidas)
-    const sparkCount = 800;
-    const sparkGeo = new THREE.BufferGeometry();
-    const sparkPos = new Float32Array(sparkCount * 3);
-    for (let i = 0; i < sparkCount * 3; i += 3) {
-      sparkPos[i]     = (Math.random() - 0.5) * 18;
-      sparkPos[i + 1] = (Math.random() - 0.5) * 14;
-      sparkPos[i + 2] = (Math.random() - 0.5) * 24;
-    }
-    sparkGeo.setAttribute("position", new THREE.BufferAttribute(sparkPos, 3));
-    const sparkMat = new THREE.PointsMaterial({
-      size: 0.12,
-      color: 0xaaffff,
-      transparent: true,
-      opacity: 0.6,
-      blending: THREE.AdditiveBlending
-    });
-    const sparks = new THREE.Points(sparkGeo, sparkMat);
-    scene.add(sparks);
-
-    // Grid floor aprimorado
-    const grid = new THREE.GridHelper(32, 48, 0x2ef2a5, 0x4477aa);
-    grid.material.opacity = 0.18;
+    // Grid holográfica
+    const grid = new THREE.GridHelper(80, 60, 0x2ef2a5, 0x4477ff);
+    grid.material.opacity = 0.16;
     grid.material.transparent = true;
-    grid.position.set(0, -4.5, -6);
-    grid.rotation.x = Math.PI * 0.15;
+    grid.position.y = -18;
     scene.add(grid);
 
     // Resize
     function resize() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
     }
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
     resize();
 
-    // Scroll control
-    let targetScroll = 0;
-    let currentScroll = 0;
+    // Scroll
+    let target = 0;
+    let current = 0;
 
-    function onScroll() {
-      const max = document.body.scrollHeight - window.innerHeight;
-      targetScroll = Math.max(0, (window.scrollY || 0) / max);
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    window.addEventListener('scroll', () => {
+      target = Math.min(1, window.scrollY / (document.body.scrollHeight - window.innerHeight));
+    }, { passive: true });
 
-    // Reveal cards
-    const cards = document.querySelectorAll(".card");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("in");
-      });
-    }, { threshold: 0.2 });
-    cards.forEach(card => observer.observe(card));
-
-    // Parallax images
-    const images = document.querySelectorAll(".media img");
-    function parallaxImages() {
-      images.forEach(img => {
-        const rect = img.getBoundingClientRect();
-        const center = (rect.top + rect.height / 2) / window.innerHeight;
-        const move = (0.5 - center) * 0.28;
-        img.style.transform = `scale(1.12) translateY(${move * 52}px)`;
-      });
-    }
-    window.addEventListener("scroll", parallaxImages, { passive: true });
+    // Reveal
+    document.querySelectorAll('.card').forEach((card, i) => {
+      setTimeout(() => {
+        const obs = new IntersectionObserver((e) => {
+          if (e[0].isIntersecting) card.classList.add('in');
+        }, { threshold: 0.25 });
+        obs.observe(card);
+      }, i * 80);
+    });
 
     const clock = new THREE.Clock();
 
@@ -522,45 +405,44 @@
       const t = clock.getElapsedTime();
       const delta = clock.getDelta();
 
-      const smooth = 0.085;
-      currentScroll += (targetScroll - currentScroll) * smooth;
+      current = current * 0.88 + target * 0.12;
 
-      const p = currentScroll;
+      // Movimento da câmera épico
+      camera.position.x = Math.sin(current * 3.2 + t * 0.1) * (4 + current * 8);
+      camera.position.y = 4 + Math.cos(current * 2.1) * 3;
+      camera.position.z = 26 - current * 32;
+      camera.lookAt(0, 2 + current * 4, -10);
 
-      // Câmera cinematográfica
-      camera.position.x = Math.sin(p * 2.2 + t * 0.18) * 1.8;
-      camera.position.y = 1.8 + Math.cos(p * 1.6 + t * 0.12) * 1.1;
-      camera.position.z = 14 - p * 9.5;
-      camera.lookAt(
-        Math.sin(p * 1.1) * 0.6, 
-        0.6 + p * 0.8, 
-        -2
-      );
+      // Core
+      core.rotation.y = t * 0.12 + current * 3.5;
+      core.rotation.x = Math.sin(t * 0.25) * 0.2;
+      coreMesh.scale.setScalar(1 + current * 0.6);
 
-      // Animação do núcleo
-      coreGroup.rotation.y = t * 0.18 + p * 4.2;
-      coreGroup.rotation.x = Math.sin(t * 0.35) * 0.25 + p * 0.6;
-      coreMesh.scale.setScalar(1 + p * 0.35);
-
-      coreMat.emissiveIntensity = 0.35 + p * 1.1;
-
-      // Anéis orbitais
-      rings.forEach((ring, i) => {
-        ring.rotation.z = t * (0.8 + i * 0.4) + p * 3;
+      // Anéis de energia
+      energyRings.forEach((ring, i) => {
+        ring.rotation.z = t * (1.1 + i) + current * 6;
       });
 
-      // Partículas principais
-      mainPoints.rotation.y = t * 0.06 + p * 2.4;
-      mainPoints.rotation.x = p * 1.1;
-      mainPoints.position.z = p * -8;
+      // Satélites
+      satellites.forEach((sat, i) => {
+        sat.userData.angle += delta * sat.userData.speed * (0.6 + current);
+        const r = sat.userData.radius;
+        sat.position.x = Math.cos(sat.userData.angle) * r;
+        sat.position.z = Math.sin(sat.userData.angle) * r * 0.6;
+        sat.position.y = Math.sin(t * 2 + i) * 2;
+        sat.rotation.y = t * 2 + i;
+      });
 
-      // Sparks
-      sparks.rotation.y = t * 1.8;
-      sparks.rotation.x = t * 0.6 + p * 2.5;
+      // Estrelas
+      stars.rotation.y = t * 0.008;
+
+      // Fluxo de dados
+      dataPoints.position.z = current * -45;
+      dataPoints.rotation.y = t * 0.4;
 
       // Grid
-      grid.rotation.z = p * 0.6 + Math.sin(t * 0.2) * 0.1;
-      grid.position.y = -4.5 + p * 2.8;
+      grid.rotation.x = 0.2 + current * 0.6;
+      grid.position.z = -10 - current * 25;
 
       renderer.render(scene, camera);
     }
@@ -568,4 +450,4 @@
     animate();
   </script>
 </body>
-  </html>
+</html>
