@@ -3,782 +3,465 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#020403" />
-  <title>NVIDIA — AI Compute Experience</title>
+  <meta name="theme-color" content="#04070a" />
+  <title>NVIDIA — A Máquina da Era da IA · Experiência 3D</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@400;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
 
   <style>
     :root {
-      --bg: #020403;
-      --txt: #f2fff4;
-      --muted: #9fb8a8;
-      --line: rgba(182, 255, 61, 0.14);
+      --bg: #04070a;
+      --txt: #eef4ee;
+      --muted: #93a39a;
       --green: #76b900;
-      --lime: #b6ff3d;
-      --cyan: #37f6c9;
-      --display: "Sora", sans-serif;
-      --body: "Inter", sans-serif;
+      --green-hi: #a4e62c;
+      --cyan: #35e0ff;
+      --amber: #ffb020;
+      --line: rgba(118, 185, 0, 0.22);
+      --display: "Archivo Black", sans-serif;
+      --mono: "Chakra Petch", monospace;
+      --body: "Manrope", sans-serif;
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html,
-    body {
-      overflow-x: clip;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    html, body { overflow-x: clip; }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--txt);
       font-family: var(--body);
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
 
-    ::selection {
-      background: rgba(118, 185, 0, 0.35);
-      color: #fff;
-    }
+    ::selection { background: rgba(118, 185, 0, 0.4); color: #fff; }
+    a { color: inherit; text-decoration: none; }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    .container { width: min(1280px, calc(100% - 44px)); margin-inline: auto; }
 
-    .container {
-      width: min(1240px, calc(100% - 40px));
-      margin-inline: auto;
-    }
-
+    /* ---------- LOADER ---------- */
     .loader {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: #020403;
-      display: grid;
-      place-items: center;
+      position: fixed; inset: 0; z-index: 2000; background: #04070a;
+      display: grid; place-items: center;
       transition: opacity 0.7s var(--ease), visibility 0.7s var(--ease);
     }
-
-    .loader.done {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+    .loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-core { text-align: center; }
+    .loader-word {
+      font-family: var(--display); font-size: clamp(40px, 8vw, 72px);
+      color: var(--green); letter-spacing: 0.02em;
+      animation: pulse 1.3s ease-in-out infinite;
     }
-
-    .loader-logo {
-      font-family: var(--display);
-      font-size: 24px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--lime);
-      animation: pulse 1.2s ease-in-out infinite;
+    .loader-bar {
+      width: 180px; height: 2px; margin: 18px auto 0; background: rgba(255,255,255,0.1);
+      overflow: hidden; position: relative;
     }
-
-    @keyframes pulse {
-      50% {
-        opacity: 0.35;
-      }
+    .loader-bar::after {
+      content: ""; position: absolute; inset: 0; background: var(--green);
+      transform-origin: left; animation: load 1.4s var(--ease) infinite;
     }
+    @keyframes load { 0% { transform: scaleX(0); } 60% { transform: scaleX(1); transform-origin: left; } 100% { transform: scaleX(0); transform-origin: right; } }
+    @keyframes pulse { 50% { opacity: 0.4; } }
 
+    /* ---------- OVERLAYS ---------- */
     .progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      z-index: 1000;
-      transform-origin: 0 50%;
-      transform: scaleX(0);
-      background: linear-gradient(90deg, var(--green), var(--lime), var(--cyan));
-      box-shadow: 0 0 24px rgba(118, 185, 0, 0.45);
+      position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000;
+      transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--green), var(--green-hi));
+      box-shadow: 0 0 18px rgba(118, 185, 0, 0.5);
     }
-
     .bg-fallback {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
+      position: fixed; inset: 0; z-index: 0;
       background:
-        radial-gradient(circle at 18% 22%, rgba(118, 185, 0, 0.18), transparent 28%),
-        radial-gradient(circle at 82% 28%, rgba(55, 246, 201, 0.12), transparent 24%),
-        radial-gradient(circle at 50% 82%, rgba(182, 255, 61, 0.1), transparent 30%),
-        #020403;
+        radial-gradient(ellipse 60% 45% at 38% 55%, rgba(118, 185, 0, 0.1), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 20%, rgba(53, 224, 255, 0.05), transparent 70%),
+        #04070a;
     }
-
-    #bg3d {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      display: block;
-      pointer-events: none;
-    }
-
+    #bg3d { position: fixed; inset: 0; z-index: 1; display: block; pointer-events: none; }
     .vignette {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 50% 42%, transparent 28%, rgba(0, 0, 0, 0.36) 100%);
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(circle at 50% 45%, transparent 30%, rgba(0,0,0,0.42) 100%);
+    }
+    .grain {
+      position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
+    /* ---------- HEADER ---------- */
     .site-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 100;
-      padding: 16px 0;
-      background: linear-gradient(180deg, rgba(2, 4, 3, 0.74), transparent);
-      -webkit-backdrop-filter: blur(14px);
-      backdrop-filter: blur(14px);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 18px 0;
+      transition: all 0.35s var(--ease);
     }
-
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
+    .site-header.scrolled {
+      padding: 10px 0; background: rgba(4, 7, 10, 0.78);
+      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(118, 185, 0, 0.14);
     }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--display);
-      font-weight: 800;
-      font-size: 18px;
-      letter-spacing: -0.04em;
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .wordmark { display: flex; align-items: baseline; gap: 12px; }
+    .wordmark b { font-family: var(--display); font-size: 22px; color: var(--green); letter-spacing: 0.01em; }
+    .wordmark span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; color: var(--muted); }
+    .nav-mono { display: flex; gap: 26px; }
+    .nav-mono a {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; color: var(--muted);
+      transition: color 0.25s var(--ease);
     }
-
-    .logo-badge {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--green), var(--lime));
-      display: grid;
-      place-items: center;
-      color: #031000;
-      font-weight: 900;
-      box-shadow: 0 0 30px rgba(118, 185, 0, 0.4);
-      flex: 0 0 auto;
-    }
-
-    .logo small {
-      display: block;
-      font-size: 10px;
-      letter-spacing: 0.24em;
-      color: var(--muted);
-      font-weight: 800;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
+    .nav-mono a:hover { color: var(--green-hi); }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 50px;
-      padding: 0 24px;
-      border-radius: 16px;
-      font-weight: 800;
-      font-size: 15px;
-      cursor: pointer;
-      border: 0;
-      transition:
-        transform 0.3s var(--ease),
-        box-shadow 0.3s var(--ease),
-        border-color 0.3s var(--ease),
-        background 0.3s var(--ease);
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 48px; padding: 0 26px; border-radius: 4px;
+      font-family: var(--mono); font-weight: 700; font-size: 13px; letter-spacing: 0.12em;
+      cursor: pointer; border: 0; text-transform: uppercase;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
     }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-green { background: var(--green); color: #06120a; box-shadow: 0 14px 40px rgba(118, 185, 0, 0.3); }
+    .btn-green:hover { background: var(--green-hi); box-shadow: 0 18px 55px rgba(118, 185, 0, 0.42); }
+    .btn-ghost { background: transparent; border: 1px solid rgba(238, 244, 238, 0.22); color: var(--txt); }
+    .btn-ghost:hover { border-color: var(--green); color: var(--green-hi); }
 
-    .btn:hover {
-      transform: translateY(-3px);
+    /* ---------- HUD ---------- */
+    .hud {
+      position: fixed; left: 24px; bottom: 22px; z-index: 60;
+      font-family: var(--mono); pointer-events: none;
     }
+    .hud-chapter { font-size: 12px; letter-spacing: 0.22em; color: var(--green-hi); margin-bottom: 12px; }
+    .hud-specs { display: grid; gap: 5px; }
+    .hud-specs div { display: flex; gap: 12px; font-size: 11px; letter-spacing: 0.1em; }
+    .hud-specs span { color: rgba(147, 163, 154, 0.75); width: 92px; }
+    .hud-specs b { color: #d5e8cf; font-weight: 600; min-width: 78px; }
 
-    .btn-green {
-      background: linear-gradient(135deg, var(--green), var(--lime));
-      color: #031000;
-      box-shadow: 0 18px 50px rgba(118, 185, 0, 0.32);
-    }
-
-    .btn-outline {
-      border: 1px solid rgba(182, 255, 61, 0.22);
-      color: #fff;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .chapter {
-      position: fixed;
-      left: 24px;
-      bottom: 24px;
-      z-index: 60;
-      font-family: var(--display);
-      font-size: 13px;
-      letter-spacing: 0.18em;
-      color: rgba(255, 255, 255, 0.72);
-      text-transform: uppercase;
-    }
-
-    .dots {
-      position: fixed;
-      right: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 60;
-      display: grid;
-      gap: 12px;
-    }
-
+    .dots { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 60; display: grid; gap: 11px; }
     .dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 999px;
-      border: 0;
-      background: rgba(255, 255, 255, 0.24);
-      cursor: pointer;
-      transition:
-        transform 0.3s var(--ease),
-        background 0.3s var(--ease),
-        box-shadow 0.3s var(--ease);
+      width: 10px; height: 10px; border-radius: 0; border: 1px solid rgba(118,185,0,0.5);
+      background: transparent; cursor: pointer; transform: rotate(45deg);
+      transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+    .dot.active { background: var(--green); box-shadow: 0 0 14px rgba(118, 185, 0, 0.8); }
+
+    /* ---------- 3D HOTSPOTS ---------- */
+    .markers { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+    .marker { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.35s var(--ease); will-change: transform; }
+    .marker.on { opacity: 1; }
+    .marker-inner { display: flex; align-items: center; gap: 0; }
+    .m-dot { width: 9px; height: 9px; background: var(--green); transform: rotate(45deg); box-shadow: 0 0 12px rgba(118,185,0,0.9); flex: 0 0 auto; }
+    .m-line { width: 44px; height: 1px; background: linear-gradient(90deg, rgba(118,185,0,0.9), rgba(118,185,0,0.15)); }
+    .m-label {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; white-space: nowrap;
+      color: #dff3d0; padding: 6px 10px; border: 1px solid var(--line);
+      background: rgba(4, 9, 6, 0.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     }
 
-    .dot.active {
-      background: var(--lime);
-      box-shadow: 0 0 18px rgba(182, 255, 61, 0.7);
-      transform: scale(1.35);
-    }
-
-    .markers {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      pointer-events: none;
-    }
-
-    .marker {
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      transition: opacity 0.35s var(--ease);
-      will-change: transform;
-    }
-
-    .marker.visible {
-      opacity: 1;
-    }
-
-    .marker-pill {
-      display: grid;
-      gap: 2px;
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: rgba(2, 6, 3, 0.72);
-      border: 1px solid rgba(118, 185, 0, 0.45);
-      box-shadow: 0 0 30px rgba(118, 185, 0, 0.18);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-    }
-
-    .marker-pill b {
-      font-family: var(--display);
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #eaffc9;
-    }
-
-    .marker-pill span {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    main {
-      position: relative;
-      z-index: 3;
-    }
-
-    .story {
-      position: relative;
-      height: 650vh;
-    }
-
-    .story-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-    }
-
-    .story-sticky::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 50% 50%, transparent 34%, rgba(0, 0, 0, 0.38) 100%);
-    }
+    /* ---------- STORY ---------- */
+    main { position: relative; z-index: 10; }
+    .story { position: relative; height: 700vh; }
+    .story-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; display: grid; }
 
     .step {
-      grid-area: 1 / 1;
-      position: relative;
-      z-index: 4;
-      max-width: 1000px;
-      padding: 24px;
-      text-align: center;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(70px) scale(0.97);
-      will-change: transform, opacity, filter;
+      grid-area: 1 / 1; position: relative; z-index: 4; width: 100%; height: 100%;
+      display: flex; align-items: center; padding: 0 6vw;
+      opacity: 0; visibility: hidden; will-change: transform, opacity;
     }
+    .step[data-side="right"] { justify-content: flex-end; }
+    .step[data-side="left"] { justify-content: flex-start; }
 
-    .no-gsap .step:first-child {
-      opacity: 1;
-      visibility: visible;
-      transform: none;
-    }
+    .no-gsap .step:first-child { opacity: 1; visibility: visible; }
+    .fallback-active .step { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), visibility 0.6s; }
+    .fallback-active .step.active { opacity: 1; visibility: visible; transform: none !important; }
+    .gsap .step { transition: none; }
 
-    .fallback-active .step {
-      transition:
-        opacity 0.6s var(--ease),
-        transform 0.6s var(--ease),
-        visibility 0.6s var(--ease);
+    .panel { max-width: 620px; position: relative; }
+    .panel .num {
+      position: absolute; top: -84px; left: -12px; z-index: -1; user-select: none;
+      font-family: var(--display); font-size: clamp(90px, 12vw, 160px); line-height: 1;
+      color: transparent; -webkit-text-stroke: 1.5px rgba(118, 185, 0, 0.22);
     }
-
-    .fallback-active .step.active {
-      opacity: 1;
-      visibility: visible;
-      transform: none;
+    .kicker {
+      font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.28em;
+      color: var(--green-hi); text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 10px;
     }
-
-    .gsap .step {
-      transition: none;
+    .kicker::before { content: ""; width: 26px; height: 1px; background: var(--green); }
+    .panel h2 {
+      font-family: var(--display); text-transform: uppercase;
+      font-size: clamp(2.5rem, 5vw, 4.4rem); line-height: 0.96; letter-spacing: -0.01em;
+      margin: 16px 0 18px; border-left: 3px solid var(--green); padding-left: 20px;
     }
-
-    .step-badge {
-      display: inline-flex;
-      padding: 10px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(118, 185, 0, 0.28);
-      background: rgba(118, 185, 0, 0.08);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 900;
-      color: #d9ffb0;
-      margin-bottom: 20px;
+    .step.is-hero .panel h2 { font-size: clamp(2.9rem, 6.4vw, 5.6rem); }
+    .panel h2 .stroke { color: transparent; -webkit-text-stroke: 1.5px rgba(238, 244, 238, 0.55); }
+    .panel h2 .grn { color: var(--green); }
+    .panel p { color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.12rem); line-height: 1.75; max-width: 46ch; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .chip {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 7px 11px; border: 1px solid var(--line); color: #cfe6bd; background: rgba(118, 185, 0, 0.06);
     }
-
-    .step h2 {
-      font-family: var(--display);
-      font-size: clamp(3rem, 9vw, 7.5rem);
-      line-height: 0.92;
-      letter-spacing: -0.07em;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-      text-shadow: 0 20px 80px rgba(0, 0, 0, 0.55);
-    }
-
-    .step p {
-      max-width: 760px;
-      margin: 0 auto;
-      color: var(--muted);
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-      line-height: 1.75;
-      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    }
-
-    .hero-actions {
-      margin-top: 30px;
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, var(--lime), var(--green), var(--cyan));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .outline-text {
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(182, 255, 61, 0.35);
-    }
+    .chip.alt { border-color: rgba(53, 224, 255, 0.3); color: #bfeeff; background: rgba(53, 224, 255, 0.05); }
+    .chip.warm { border-color: rgba(255, 176, 32, 0.32); color: #ffd98f; background: rgba(255, 176, 32, 0.05); }
+    .cta-row { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
 
     .scroll-hint {
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-      display: grid;
-      justify-items: center;
-      gap: 10px;
-      color: rgba(255, 255, 255, 0.66);
-      font-size: 12px;
-      letter-spacing: 0.18em;
+      position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 5;
+      display: grid; justify-items: center; gap: 9px;
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.26em; color: rgba(238,244,238,0.55);
       text-transform: uppercase;
     }
-
-    .mouse {
-      width: 26px;
-      height: 42px;
-      border: 2px solid rgba(182, 255, 61, 0.28);
-      border-radius: 999px;
-      position: relative;
-    }
-
+    .mouse { width: 24px; height: 38px; border: 2px solid rgba(118, 185, 0, 0.45); border-radius: 999px; position: relative; }
     .mouse::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 8px;
-      width: 4px;
-      height: 8px;
-      background: var(--lime);
-      border-radius: 999px;
-      transform: translateX(-50%);
-      animation: wheel 1.6s infinite;
+      content: ""; position: absolute; left: 50%; top: 7px; width: 3px; height: 7px;
+      background: var(--green-hi); border-radius: 999px; transform: translateX(-50%);
+      animation: wheel 1.5s infinite;
     }
+    @keyframes wheel { 0% { opacity: 0; transform: translate(-50%, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, 14px); } }
 
-    @keyframes wheel {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, 0);
-      }
-      30% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, 16px);
-      }
-    }
-
+    /* ---------- FOOTER ---------- */
     .footer {
-      position: relative;
-      z-index: 3;
-      padding: 80px 0;
-      background: rgba(2, 4, 3, 0.78);
-      border-top: 1px solid rgba(118, 185, 0, 0.16);
-      -webkit-backdrop-filter: blur(14px);
-      backdrop-filter: blur(14px);
+      position: relative; z-index: 10; padding: 90px 0 34px; overflow: hidden;
+      background: rgba(3, 5, 8, 0.86); border-top: 1px solid rgba(118, 185, 0, 0.16);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
     }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.3fr 0.7fr 0.7fr;
-      gap: 30px;
+    .footer-watermark {
+      position: absolute; right: -20px; bottom: -46px; font-family: var(--display);
+      font-size: clamp(120px, 22vw, 300px); line-height: 1; color: transparent;
+      -webkit-text-stroke: 1px rgba(118, 185, 0, 0.12); user-select: none; pointer-events: none;
     }
-
+    .footer-grid { display: grid; grid-template-columns: 1.4fr 0.6fr 0.6fr; gap: 34px; position: relative; }
     .footer h4 {
-      font-family: var(--display);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 13px;
-      color: #dfe8ff;
-      margin-bottom: 16px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--green-hi); margin-bottom: 16px;
     }
-
-    .footer p {
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 520px;
-    }
-
-    .footer-links {
-      display: grid;
-      gap: 10px;
-    }
-
-    .footer-links a {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .footer-links a:hover {
-      color: #fff;
-    }
-
+    .footer p { color: var(--muted); line-height: 1.8; max-width: 480px; font-size: 14px; }
+    .footer-links { display: grid; gap: 10px; }
+    .footer-links a { color: var(--muted); font-size: 14px; transition: color 0.25s var(--ease); }
+    .footer-links a:hover { color: var(--green-hi); }
     .footer-bottom {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 13px;
+      margin-top: 56px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: rgba(147,163,154,0.7);
+      position: relative;
     }
 
-    @media (max-width: 980px) {
-      .header-actions .btn-outline {
-        display: none;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    /* ---------- RESPONSIVO ---------- */
+    @media (max-width: 1024px) { .nav-mono { display: none; } }
 
     @media (max-width: 820px) {
-      .story {
-        height: 520vh;
-      }
-
-      .dots {
-        right: 12px;
-      }
-
-      .chapter {
-        left: 16px;
-        bottom: 16px;
-      }
-
-      .step {
-        padding: 18px;
-      }
-
-      .marker-pill {
-        padding: 8px 10px;
-      }
-
-      .marker-pill b {
-        font-size: 11px;
-      }
-
-      .marker-pill span {
-        font-size: 10px;
-      }
+      .story { height: 620vh; }
+      .markers { display: none; }
+      .hud-specs { display: none; }
+      .hud { left: 16px; bottom: 14px; }
+      .dots { right: 12px; }
+      .step { align-items: flex-end; padding: 0 20px 84px; justify-content: flex-start !important; }
+      .panel { max-width: 100%; }
+      .panel .num { top: -64px; font-size: 88px; }
+      .panel p { max-width: 100%; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .wordmark span { display: none; }
     }
 
-    @media (max-width: 640px) {
-      .logo small {
-        display: none;
-      }
-
-      .hero-actions .btn {
-        width: 100%;
-      }
+    @media (max-width: 560px) {
+      .cta-row .btn { width: 100%; }
+      .site-header .btn { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      .story {
-        height: auto;
-      }
-
-      .story-sticky {
-        position: relative;
-        height: auto;
-      }
-
-      .step {
-        position: relative;
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: none !important;
-        margin-bottom: 70px;
-      }
-
-      .dots,
-      .chapter,
-      .scroll-hint,
-      .markers {
-        display: none;
-      }
-
-      .mouse::after {
-        animation: none;
-      }
+      html { scroll-behavior: auto; }
+      .story { height: auto; }
+      .story-sticky { position: relative; height: auto; display: block; }
+      .step { position: relative; opacity: 1 !important; visibility: visible !important; transform: none !important; padding: 90px 20px; }
+      .dots, .hud, .scroll-hint, .markers { display: none; }
+      .mouse::after, .loader-word, .loader-bar::after { animation: none; }
     }
   </style>
 </head>
 <body>
   <div class="loader" id="loader">
-    <div class="loader-logo">NVIDIA</div>
+    <div class="loader-core">
+      <div class="loader-word">NVIDIA</div>
+      <div class="loader-bar"></div>
+    </div>
   </div>
 
   <div class="progress" id="progressBar"></div>
-
   <div class="bg-fallback"></div>
   <canvas id="bg3d"></canvas>
   <div class="vignette"></div>
+  <div class="grain"></div>
   <div class="markers" id="markers"></div>
 
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
     <div class="container header-inner">
-      <a href="#top" class="logo">
-        <span class="logo-badge">N</span>
-        <span>
-          NVIDIA
-          <small>AI COMPUTE EXPERIENCE</small>
-        </span>
-      </a>
-
-      <div class="header-actions">
-        <a href="#final" class="btn btn-outline">Capítulo final</a>
-        <a href="#final" class="btn btn-green">Explorar</a>
-      </div>
+      <a href="#top" class="wordmark"><b>NVIDIA</b><span>GEFORCE RTX · CONCEITO 3D</span></a>
+      <nav class="nav-mono">
+        <a href="#top">ARQUITETURA</a>
+        <a href="#top">CUDA</a>
+        <a href="#top">RAY TRACING</a>
+        <a href="#top">DLSS 4</a>
+        <a href="#top">AI FACTORY</a>
+      </nav>
+      <a href="#final" class="btn btn-green">Explorar</a>
     </div>
   </header>
 
-  <div class="chapter" id="chapter">01 / 06</div>
+  <div class="hud">
+    <div class="hud-chapter" id="hudChapter">CAP 01 — INTRO</div>
+    <div class="hud-specs">
+      <div><span>CORE CLOCK</span><b id="hudClock">2.40 GHz</b></div>
+      <div><span>GPU TEMP</span><b id="hudTemp">55°C</b></div>
+      <div><span>FAN SPEED</span><b id="hudFan">320 RPM</b></div>
+      <div><span>POWER DRAW</span><b id="hudPower">260 W</b></div>
+    </div>
+  </div>
+
   <div class="dots" id="dots" aria-label="Capítulos"></div>
 
   <main id="top">
     <section class="story">
       <div class="story-sticky">
-        <article class="step">
-          <span class="step-badge">NVIDIA — AI Compute</span>
-          <h2>
-            O motor da<br />
-            <span class="gradient-text">era da IA</span>
-          </h2>
-          <p>
-            Uma experiência 3D interativa sobre a computação acelerada que alimenta
-            jogos, IA, simulação, robótica e o próximo estágio da realidade digital.
-          </p>
+
+        <article class="step is-hero" data-side="right">
+          <div class="panel">
+            <span class="kicker">GeForce RTX 5090 · Edição Conceito</span>
+            <h2>A máquina<br /><span class="stroke">que move</span><br /><span class="grn">a era da IA</span></h2>
+            <p>Uma experiência 3D interativa: a câmera orbita a placa, a cena reage ao scroll e cada capítulo abre uma parte da arquitetura.</p>
+            <div class="cta-row">
+              <a href="#final" class="btn btn-green">Iniciar jornada</a>
+              <a href="#top" class="btn btn-ghost">Ver specs</a>
+            </div>
+            <div class="chips">
+              <span class="chip">32 GB GDDR7</span>
+              <span class="chip">PCIe 5.0</span>
+              <span class="chip alt">DLSS 4</span>
+              <span class="chip warm">575 W</span>
+            </div>
+          </div>
         </article>
 
-        <article class="step">
-          <span class="step-badge">Capítulo 01 — GPU</span>
-          <h2>
-            Computação<br />
-            <span class="outline-text">paralela</span>
-          </h2>
-          <p>
-            A GPU deixou de ser apenas uma placa gráfica. Ela se tornou uma máquina
-            de processamento massivamente paralela, feita para milhares de cálculos simultâneos.
-          </p>
+        <article class="step" data-side="left">
+          <div class="panel">
+            <span class="num">01</span>
+            <span class="kicker">Capítulo 01 · Refrigeração</span>
+            <h2>Três fans.<br /><span class="grn">Zero compromisso.</span></h2>
+            <p>Ventoinhas axiais de contra-rotação empurram ar através da câmara de vapor direto no die. Role mais rápido — e veja os fans acelerarem com você.</p>
+            <div class="chips">
+              <span class="chip">3× Axial 105 mm</span>
+              <span class="chip">Vapor Chamber</span>
+              <span class="chip">0 dB Mode</span>
+            </div>
+          </div>
         </article>
 
-        <article class="step">
-          <span class="step-badge">Capítulo 02 — CUDA</span>
-          <h2>
-            CUDA<br />
-            <span class="gradient-text">plataforma</span>
-          </h2>
-          <p>
-            CUDA abriu a GPU para desenvolvedores, cientistas e pesquisadores.
-            A aceleração saiu dos jogos e entrou na IA, simulação e computação científica.
-          </p>
+        <article class="step" data-side="right">
+          <div class="panel">
+            <span class="num">02</span>
+            <span class="kicker">Capítulo 02 · CUDA</span>
+            <h2><span class="stroke">21.760</span> núcleos<br /><span class="grn">em paralelo</span></h2>
+            <p>A placa vira de costas para mostrar o backplate — e o que existe abaixo dele: o maior motor de computação paralela já colocado em uma GPU consumer.</p>
+            <div class="chips">
+              <span class="chip">21.760 CUDA Cores</span>
+              <span class="chip">Blackwell</span>
+              <span class="chip">TSMC 4NP</span>
+            </div>
+          </div>
         </article>
 
-        <article class="step">
-          <span class="step-badge">Capítulo 03 — RTX</span>
-          <h2>
-            RTX<br />
-            <span class="outline-text">tempo real</span>
-          </h2>
-          <p>
-            Ray tracing, DLSS e Tensor Cores transformaram renderização em tempo real.
-            Luz, reflexo e inteligência passaram a coexistir no mesmo quadro.
-          </p>
+        <article class="step" data-side="left">
+          <div class="panel">
+            <span class="num">03</span>
+            <span class="kicker">Capítulo 03 · Ray Tracing</span>
+            <h2>Luz física,<br /><span class="grn">em tempo real</span></h2>
+            <p>RT Cores de 4ª geração traçam reflexos, sombras e iluminação global à velocidade de cinema — enquanto o LED marca o perfil da placa.</p>
+            <div class="chips">
+              <span class="chip alt">RT Cores 4ª Gen</span>
+              <span class="chip alt">Path Tracing</span>
+              <span class="chip">DP 2.1b ×3</span>
+            </div>
+          </div>
         </article>
 
-        <article class="step">
-          <span class="step-badge">Capítulo 04 — Omniverse</span>
-          <h2>
-            Mundos<br />
-            <span class="gradient-text">simulados</span>
-          </h2>
-          <p>
-            Omniverse conecta design, física, gêmeos digitais e colaboração em tempo real.
-            Indústrias inteiras passam a operar dentro de simulações vivas.
-          </p>
+        <article class="step" data-side="right">
+          <div class="panel">
+            <span class="num">04</span>
+            <span class="kicker">Capítulo 04 · DLSS 4</span>
+            <h2>A IA<br /><span class="grn">renderiza por você</span></h2>
+            <p>Tensor Cores de 5ª geração geram múltiplos quadros por frame renderizado. Mais FPS, mesma qualidade — a placa decide o que a luz faz a seguir.</p>
+            <div class="chips">
+              <span class="chip warm">Multi Frame Gen</span>
+              <span class="chip">Tensor 5ª Gen</span>
+              <span class="chip alt">Reflex 2</span>
+            </div>
+          </div>
         </article>
 
-        <article class="step" id="final">
-          <span class="step-badge">Capítulo 05 — Physical AI</span>
-          <h2>
-            IA no<br />
-            <span class="gradient-text">mundo real</span>
-          </h2>
-          <p>
-            Robôs, fábricas inteligentes, sistemas autônomos e computação física.
-            A próxima fronteira da NVIDIA é treinar IA para entender e agir no mundo real.
-          </p>
-          <div class="hero-actions">
-            <a href="#top" class="btn btn-green">Rever experiência</a>
-            <a href="#footer" class="btn btn-outline">Explorar mais</a>
+        <article class="step" data-side="left">
+          <div class="panel">
+            <span class="num">05</span>
+            <span class="kicker">Capítulo 05 · AI Factory</span>
+            <h2>De uma GPU<br /><span class="grn">para milhões</span></h2>
+            <p>A câmera recua e a placa vira frota: racks de GPUs acelerando treino, inferência, gêmeos digitais e robótica em escala de data center.</p>
+            <div class="chips">
+              <span class="chip">NVLink</span>
+              <span class="chip alt">DGX SuperPOD</span>
+              <span class="chip warm">Physical AI</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="step" data-side="left" id="final">
+          <div class="panel">
+            <span class="kicker">Capítulo final · 2026</span>
+            <h2>O futuro é<br /><span class="grn">acelerado</span></h2>
+            <p>Jogos, IA, simulação e robótica passam pelo mesmo silício. Esta experiência é um conceito — a revolução é real.</p>
+            <div class="cta-row">
+              <a href="#top" class="btn btn-green">Rever a experiência</a>
+              <a href="#footer" class="btn btn-ghost">Créditos</a>
+            </div>
           </div>
         </article>
 
         <div class="scroll-hint">
           <div class="mouse"></div>
-          <span>role para acelerar</span>
+          <span>role para orbitar</span>
         </div>
       </div>
     </section>
 
     <footer class="footer" id="footer">
+      <div class="footer-watermark">NVIDIA</div>
       <div class="container footer-grid">
         <div>
-          <h4>NVIDIA AI Compute</h4>
-          <p>
-            Experiência 3D interativa inspirada em sites premium WebGL: cena viva,
-            câmera cinematográfica, capítulos animados e marcadores integrados ao espaço 3D.
-          </p>
+          <h4>A Experiência</h4>
+          <p>Site 3D interativo construído em WebGL: GPU modelada em tempo real, câmera cinematográfica guiada por scroll, hotspots ancorados no modelo, ventoinhas reativas ao scroll e reveal de AI Factory no capítulo final.</p>
         </div>
-
         <div>
           <h4>Capítulos</h4>
           <div class="footer-links">
-            <a href="#top">GPU</a>
-            <a href="#top">CUDA</a>
-            <a href="#top">RTX</a>
-            <a href="#top">Omniverse</a>
-            <a href="#final">Physical AI</a>
+            <a href="#top">01 · Refrigeração</a>
+            <a href="#top">02 · CUDA</a>
+            <a href="#top">03 · Ray Tracing</a>
+            <a href="#top">04 · DLSS 4</a>
+            <a href="#top">05 · AI Factory</a>
           </div>
         </div>
-
         <div>
-          <h4>Experiência</h4>
+          <h4>Stack</h4>
           <div class="footer-links">
-            <a href="#top">3D compute field</a>
-            <a href="#top">Scroll camera</a>
-            <a href="#top">3D markers</a>
-            <a href="#top">Bloom</a>
+            <a href="#top">Three.js · WebGL</a>
+            <a href="#top">GSAP ScrollTrigger</a>
+            <a href="#top">Bloom · ACES</a>
+            <a href="#top">Mobile otimizado</a>
           </div>
         </div>
       </div>
-
       <div class="container footer-bottom">
-        <div>© 2026 NVIDIA concept — não oficial.</div>
-        <div>Interactive WebGL scrollytelling.</div>
+        <div>© 2026 — SITE CONCEITO NÃO OFICIAL. NVIDIA E GEFORCE SÃO MARCAS DA NVIDIA CORPORATION.</div>
+        <div>EXPERIÊNCIA 3D · SCROLLYTELLING</div>
       </div>
     </footer>
   </main>
@@ -797,98 +480,81 @@
 
   <script type="module">
     const state = {
-      progress: 0,
-      smooth: 0,
-      activeChapter: 0,
-      mouseX: 0,
-      mouseY: 0,
-      targetMouseX: 0,
-      targetMouseY: 0,
+      progress: 0, smooth: 0, lastSmooth: 0,
+      chapterFloat: 0, activeChapter: 0,
+      mouseX: 0, mouseY: 0, tMouseX: 0, tMouseY: 0,
+      fanSpeed: 2.5,
     };
 
     const steps = [...document.querySelectorAll(".step")];
-    const dotsContainer = document.getElementById("dots");
-    const chapter = document.getElementById("chapter");
+    const dotsBox = document.getElementById("dots");
+    const hudChapter = document.getElementById("hudChapter");
+    const hudClock = document.getElementById("hudClock");
+    const hudTemp = document.getElementById("hudTemp");
+    const hudFan = document.getElementById("hudFan");
+    const hudPower = document.getElementById("hudPower");
     const progressBar = document.getElementById("progressBar");
+    const siteHeader = document.getElementById("siteHeader");
     const loader = document.getElementById("loader");
+
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const canHover = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
 
+    const chapterNames = ["INTRO", "REFRIGERAÇÃO", "CUDA", "RAY TRACING", "DLSS 4", "AI FACTORY", "FUTURO"];
+
     steps.forEach((_, i) => {
-      const dot = document.createElement("button");
-      dot.className = "dot";
-      dot.setAttribute("aria-label", `Ir para capítulo ${i + 1}`);
-      dot.addEventListener("click", () => scrollToStep(i));
-      dotsContainer.appendChild(dot);
+      const d = document.createElement("button");
+      d.className = "dot";
+      d.setAttribute("aria-label", "Capítulo " + (i + 1));
+      d.addEventListener("click", () => scrollToStep(i));
+      dotsBox.appendChild(d);
     });
+    const dots = [...dotsBox.children];
 
-    const dots = [...dotsContainer.children];
-
-    function scrollToStep(index) {
+    function scrollToStep(i) {
       const story = document.querySelector(".story");
       const total = story.offsetHeight - window.innerHeight;
-      const top = story.offsetTop + (index / Math.max(1, steps.length - 1)) * total;
-      window.scrollTo({ top, behavior: "smooth" });
+      window.scrollTo({ top: story.offsetTop + (i / Math.max(1, steps.length - 1)) * total, behavior: "smooth" });
     }
 
-    function updateUI(progress) {
-      const idx = Math.min(
-        steps.length - 1,
-        Math.round(progress * (steps.length - 1))
-      );
-
+    function updateUI(p) {
+      const idx = Math.min(steps.length - 1, Math.round(p * (steps.length - 1)));
       state.activeChapter = idx;
-
-      dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === idx);
-      });
-
-      if (chapter) {
-        chapter.textContent = `${String(idx + 1).padStart(2, "0")} / ${String(
-          steps.length
-        ).padStart(2, "0")}`;
-      }
+      dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+      if (hudChapter) hudChapter.textContent = "CAP 0" + (idx + 1) + " — " + chapterNames[idx];
     }
 
-    function updatePageProgress() {
+    function updateChrome() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      const p = max > 0 ? window.scrollY / max : 0;
-      progressBar.style.transform = `scaleX(${p})`;
+      progressBar.style.transform = "scaleX(" + (max > 0 ? window.scrollY / max : 0) + ")";
+      siteHeader.classList.toggle("scrolled", window.scrollY > 30);
     }
-
-    window.addEventListener("scroll", updatePageProgress, { passive: true });
-    updatePageProgress();
+    window.addEventListener("scroll", updateChrome, { passive: true });
+    updateChrome();
     updateUI(0);
 
     if (canHover) {
-      window.addEventListener(
-        "pointermove",
-        (e) => {
-          state.targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-          state.targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        },
-        { passive: true }
-      );
+      window.addEventListener("pointermove", (e) => {
+        state.tMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        state.tMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      }, { passive: true });
     }
 
-    window.addEventListener("load", () => {
-      setTimeout(() => loader?.classList.add("done"), 350);
-    });
+    window.addEventListener("load", () => setTimeout(() => loader && loader.classList.add("done"), 400));
+    setTimeout(() => loader && loader.classList.add("done"), 2800);
 
-    setTimeout(() => loader?.classList.add("done"), 2500);
-
-    function setupScrollAnimation() {
+    /* ---------------- SCROLL ANIMATION (GSAP + fallback) ---------------- */
+    function setupScroll() {
       if (window.gsap && window.ScrollTrigger) {
         document.documentElement.classList.remove("no-gsap");
         document.documentElement.classList.add("gsap");
-
         gsap.registerPlugin(ScrollTrigger);
 
-        gsap.set(steps[0], { autoAlpha: 1, y: 0, scale: 1 });
-
-        if (steps.length > 1) {
-          gsap.set(steps.slice(1), { autoAlpha: 0, y: 80, scale: 0.96 });
-        }
+        gsap.set(steps[0], { autoAlpha: 1, x: 0, y: 0 });
+        steps.slice(1).forEach((s) => {
+          const dir = s.dataset.side === "left" ? -1 : 1;
+          gsap.set(s, { autoAlpha: 0, x: dir * 90, y: 24 });
+        });
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -896,434 +562,329 @@
             start: "top top",
             end: "bottom bottom",
             scrub: 1,
-            onUpdate: (self) => {
-              state.progress = self.progress;
-              updateUI(self.progress);
-            },
+            onUpdate: (self) => { state.progress = self.progress; updateUI(self.progress); },
           },
         });
 
-        steps.forEach((step, i) => {
+        steps.forEach((s, i) => {
           if (i === 0) return;
-
-          const pos = (i - 1) * 1.25;
-
-          tl.to(
-            steps[i - 1],
-            {
-              autoAlpha: 0,
-              y: -80,
-              scale: 1.04,
-              duration: 0.55,
-              ease: "none",
-            },
-            pos
-          ).to(
-            steps[i],
-            {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.55,
-              ease: "none",
-            },
-            pos + 0.12
-          );
+          const pos = (i - 1) * 1.15;
+          tl.to(steps[i - 1], { autoAlpha: 0, y: -70, duration: 0.5, ease: "none" }, pos)
+            .to(s, { autoAlpha: 1, x: 0, y: 0, duration: 0.55, ease: "none" }, pos + 0.14);
         });
 
-        window.addEventListener("load", () => {
-          ScrollTrigger.refresh();
-        });
+        window.addEventListener("load", () => ScrollTrigger.refresh());
       } else {
         document.documentElement.classList.add("fallback-active");
-
         const story = document.querySelector(".story");
-
-        function fallbackUpdate() {
-          const rect = story.getBoundingClientRect();
-          const total = rect.height - window.innerHeight;
-          const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-
+        const fb = () => {
+          const r = story.getBoundingClientRect();
+          const total = r.height - window.innerHeight;
+          const p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
           state.progress = p;
-
           const idx = Math.round(p * (steps.length - 1));
-
-          steps.forEach((step, i) => {
-            step.classList.toggle("active", i === idx);
-          });
-
+          steps.forEach((s, i) => s.classList.toggle("active", i === idx));
           updateUI(p);
-        }
-
-        window.addEventListener("scroll", fallbackUpdate, { passive: true });
-        fallbackUpdate();
+        };
+        window.addEventListener("scroll", fb, { passive: true });
+        fb();
       }
     }
+    setupScroll();
 
-    setupScrollAnimation();
-
+    /* ---------------- 3D SCENE ---------------- */
     async function init3D() {
       const canvas = document.getElementById("bg3d");
       if (!canvas) return;
 
       let THREE;
-      try {
-        THREE = await import("three");
-      } catch (err) {
-        console.warn("Three.js não carregou.", err);
-        return;
-      }
+      try { THREE = await import("three"); }
+      catch (e) { console.warn("Three.js não carregou.", e); return; }
 
-      const isMobile =
-        window.matchMedia("(max-width: 820px)").matches ||
-        navigator.maxTouchPoints > 1;
+      const isMobile = window.matchMedia("(max-width: 820px)").matches || navigator.maxTouchPoints > 1;
 
       let renderer;
       try {
-        renderer = new THREE.WebGLRenderer({
-          canvas,
-          antialias: !isMobile,
-          powerPreference: "high-performance",
-        });
-      } catch (err) {
-        console.warn("WebGL indisponível.", err);
-        canvas.style.display = "none";
-        return;
-      }
+        renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, powerPreference: "high-performance" });
+      } catch (e) { console.warn("WebGL indisponível.", e); canvas.style.display = "none"; return; }
 
-      renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2)
-      );
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.1;
+      renderer.toneMappingExposure = 1.15;
 
       const scene = new THREE.Scene();
-      const bgColor = new THREE.Color(0x020403);
+      const bgColor = new THREE.Color(0x04070a);
       scene.background = bgColor;
-      scene.fog = new THREE.FogExp2(0x020403, isMobile ? 0.028 : 0.02);
+      scene.fog = new THREE.FogExp2(0x04070a, isMobile ? 0.03 : 0.024);
 
-      const camera = new THREE.PerspectiveCamera(
-        50,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        300
+      const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 200);
+      camera.position.set(8.2, 2.6, 8.6);
+
+      /* luz */
+      scene.add(new THREE.HemisphereLight(0x3c4a3c, 0x0a0f0a, 0.7));
+      const key = new THREE.DirectionalLight(0xffffff, 2.8); key.position.set(6, 10, 8); scene.add(key);
+      const rim = new THREE.DirectionalLight(0x76b900, 2.4); rim.position.set(-8, 4, -6); scene.add(rim);
+      const fill = new THREE.PointLight(0x9fd86a, 26, 40, 2); fill.position.set(3, -3, 6); scene.add(fill);
+
+      try {
+        const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+      } catch (e) { console.warn("Environment indisponível.", e); }
+
+      /* ---------------- GPU (procedural) ---------------- */
+      const gpu = new THREE.Group();
+      scene.add(gpu);
+
+      const pcbMat = new THREE.MeshStandardMaterial({ color: 0x0c2413, roughness: 0.5, metalness: 0.4 });
+      const blackMetal = new THREE.MeshStandardMaterial({ color: 0x14171b, roughness: 0.35, metalness: 0.85 });
+      const darkMetal = new THREE.MeshStandardMaterial({ color: 0x1e2228, roughness: 0.42, metalness: 0.9 });
+      const silver = new THREE.MeshStandardMaterial({ color: 0x9aa3ad, roughness: 0.3, metalness: 1 });
+      const gold = new THREE.MeshStandardMaterial({ color: 0xc9a227, roughness: 0.35, metalness: 1 });
+      const ledMat = new THREE.MeshStandardMaterial({ color: 0x0a1400, emissive: 0x76b900, emissiveIntensity: 2.4, roughness: 0.4 });
+
+      const pcb = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.14, 2.7), pcbMat); gpu.add(pcb);
+
+      const backplate = new THREE.Mesh(new THREE.BoxGeometry(6.5, 0.08, 2.78), darkMetal);
+      backplate.position.y = -0.11; gpu.add(backplate);
+
+      const shroud = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.22, 2.7), blackMetal);
+      shroud.position.y = 0.18; gpu.add(shroud);
+
+      /* label GEFORCE RTX no backplate (canvas texture) */
+      const labelCanvas = document.createElement("canvas");
+      labelCanvas.width = 1024; labelCanvas.height = 256;
+      const lctx = labelCanvas.getContext("2d");
+      const labelTex = new THREE.CanvasTexture(labelCanvas);
+      labelTex.anisotropy = 8;
+      function drawLabel() {
+        lctx.fillStyle = "#171b20";
+        lctx.fillRect(0, 0, 1024, 256);
+        lctx.fillStyle = "#76b900";
+        lctx.font = '110px "Archivo Black", Arial';
+        lctx.textBaseline = "middle";
+        lctx.fillText("GEFORCE RTX", 42, 100);
+        lctx.fillStyle = "#c9d6c2";
+        lctx.font = '600 42px "Chakra Petch", Arial';
+        lctx.fillText("5090 SUPREME · 32GB GDDR7", 46, 200);
+        labelTex.needsUpdate = true;
+      }
+      drawLabel();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLabel);
+
+      const labelPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(5.6, 1.4),
+        new THREE.MeshStandardMaterial({ map: labelTex, roughness: 0.45, metalness: 0.55 })
       );
-      camera.position.set(0, 10, 26);
+      labelPlane.rotation.x = Math.PI / 2;
+      labelPlane.rotation.z = Math.PI;
+      labelPlane.position.y = -0.165;
+      gpu.add(labelPlane);
 
-      const gridSize = isMobile ? 55 : 110;
-      const spacing = isMobile ? 1.0 : 0.9;
-      const count = gridSize * gridSize;
-      const half = ((gridSize - 1) * spacing) / 2;
+      /* fans */
+      const fans = [];
+      const ringGeo = new THREE.TorusGeometry(0.78, 0.085, 12, 42);
+      const hubGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.12, 24);
+      const bladeGeo = new THREE.BoxGeometry(0.52, 0.028, 0.17);
+      const bladeCount = isMobile ? 7 : 10;
 
-      const baseGeo = new THREE.BoxGeometry(0.16, 1, 0.16);
-      baseGeo.translate(0, 0.5, 0);
-
-      const instancedGeo = new THREE.InstancedBufferGeometry();
-      instancedGeo.index = baseGeo.index;
-      instancedGeo.setAttribute("position", baseGeo.getAttribute("position"));
-      instancedGeo.setAttribute("normal", baseGeo.getAttribute("normal"));
-      instancedGeo.setAttribute("uv", baseGeo.getAttribute("uv"));
-
-      const offsets = new Float32Array(count * 3);
-      const randoms = new Float32Array(count);
-
-      let idx = 0;
-      for (let ix = 0; ix < gridSize; ix++) {
-        for (let iz = 0; iz < gridSize; iz++) {
-          const i3 = idx * 3;
-
-          offsets[i3] = ix * spacing - half + (Math.random() - 0.5) * 0.08;
-          offsets[i3 + 1] = 0;
-          offsets[i3 + 2] = iz * spacing - half + (Math.random() - 0.5) * 0.08;
-
-          randoms[idx] = Math.random();
-          idx++;
+      for (let f = 0; f < 3; f++) {
+        const fan = new THREE.Group();
+        const ring = new THREE.Mesh(ringGeo, darkMetal);
+        ring.rotation.x = Math.PI / 2; ring.position.y = 0.31; fan.add(ring);
+        const hub = new THREE.Mesh(hubGeo, blackMetal); hub.position.y = 0.33; fan.add(hub);
+        const blades = new THREE.Group();
+        for (let b = 0; b < bladeCount; b++) {
+          const blade = new THREE.Mesh(bladeGeo, blackMetal);
+          const a = (b / bladeCount) * Math.PI * 2;
+          blade.position.set(Math.cos(a) * 0.49, 0.33, Math.sin(a) * 0.49);
+          blade.rotation.y = -a;
+          blade.rotation.z = 0.5;
+          blades.add(blade);
         }
+        fan.add(blades);
+        fan.position.x = (f - 1) * 2.05;
+        gpu.add(fan);
+        fans.push({ blades, dir: f % 2 ? -1 : 1 });
       }
 
-      instancedGeo.setAttribute(
-        "aOffset",
-        new THREE.InstancedBufferAttribute(offsets, 3)
-      );
+      /* aletas do heatsink */
+      const finCount = isMobile ? 46 : 90;
+      const fins = new THREE.InstancedMesh(new THREE.BoxGeometry(0.03, 0.15, 2.5), silver, finCount);
+      const dummy = new THREE.Object3D();
+      for (let i = 0; i < finCount; i++) {
+        dummy.position.set(-3.1 + (i / (finCount - 1)) * 6.2, 0.02, 0);
+        dummy.updateMatrix();
+        fins.setMatrixAt(i, dummy.matrix);
+      }
+      fins.instanceMatrix.needsUpdate = true;
+      gpu.add(fins);
 
-      instancedGeo.setAttribute(
-        "aRandom",
-        new THREE.InstancedBufferAttribute(randoms, 1)
-      );
+      /* LED strip */
+      const led = new THREE.Mesh(new THREE.BoxGeometry(6.3, 0.05, 0.06), ledMat);
+      led.position.set(0, 0.2, 1.37); gpu.add(led);
 
-      instancedGeo.instanceCount = count;
-
-      const fieldMat = new THREE.ShaderMaterial({
-        uniforms: {
-          uTime: { value: 0 },
-          uScroll: { value: 0 },
-          uColorA: { value: new THREE.Color(0x03130a) },
-          uColorB: { value: new THREE.Color(0x76b900) },
-          uColorC: { value: new THREE.Color(0xd9ff7a) },
-        },
-        vertexShader: `
-          attribute vec3 aOffset;
-          attribute float aRandom;
-
-          uniform float uTime;
-          uniform float uScroll;
-
-          varying float vHeight;
-          varying float vLocalY;
-          varying float vDepth;
-
-          void main() {
-            vec3 pos = position;
-            vLocalY = position.y;
-
-            float x = aOffset.x;
-            float z = aOffset.z;
-            float dist = length(vec2(x, z));
-
-            float wave1 = sin(x * 0.35 + uTime * 1.2) * 0.55;
-            float wave2 = sin(z * 0.28 - uTime * 0.9) * 0.65;
-            float wave3 = sin((x + z) * 0.18 + uTime * 0.6) * 0.45;
-            float pulse = sin(dist * 0.45 - uTime * 1.6 + uScroll * 6.283) * 0.75;
-            float scrollWave = sin(x * 0.12 + z * 0.10 + uScroll * 12.0) * uScroll * 1.15;
-
-            float h = 1.15 + wave1 + wave2 + wave3 + pulse + scrollWave + aRandom * 0.35;
-            h = max(0.12, h);
-
-            pos.y *= h;
-            pos += aOffset;
-
-            vHeight = h;
-
-            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-            gl_Position = projectionMatrix * mvPosition;
-            vDepth = -mvPosition.z;
-          }
-        `,
-        fragmentShader: `
-          uniform vec3 uColorA;
-          uniform vec3 uColorB;
-          uniform vec3 uColorC;
-
-          varying float vHeight;
-          varying float vLocalY;
-          varying float vDepth;
-
-          void main() {
-            float hMix = smoothstep(0.2, 3.4, vHeight);
-
-            vec3 base = mix(uColorA, uColorB, hMix);
-            vec3 color = mix(base, uColorC, vLocalY * (0.32 + hMix * 0.55));
-
-            color += uColorB * pow(vLocalY, 6.0) * 0.35;
-
-            float depthFade = 1.0 - smoothstep(20.0, 85.0, vDepth);
-            color *= depthFade;
-
-            gl_FragColor = vec4(color, 1.0);
-          }
-        `,
-      });
-
-      const field = new THREE.Mesh(instancedGeo, fieldMat);
-      field.frustumCulled = false;
-      scene.add(field);
-
-      const pCount = isMobile ? 1000 : 3000;
-      const pGeo = new THREE.BufferGeometry();
-      const positions = new Float32Array(pCount * 3);
-
-      for (let i = 0; i < pCount; i++) {
-        const i3 = i * 3;
-
-        positions[i3] = (Math.random() - 0.5) * half * 2;
-        positions[i3 + 1] = Math.random() * 10;
-        positions[i3 + 2] = (Math.random() - 0.5) * half * 2;
+      /* PCIe + bracket + portas */
+      const pcie = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.1, 0.18), gold);
+      pcie.position.set(-0.6, -0.02, -1.42); gpu.add(pcie);
+      const bracket = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.5, 2.9), silver);
+      bracket.position.x = -3.28; gpu.add(bracket);
+      for (let i = 0; i < 4; i++) {
+        const port = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.14, 0.34), blackMetal);
+        port.position.set(-3.37, 0.05, -0.9 + i * 0.6); gpu.add(port);
       }
 
-      pGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-
-      const particles = new THREE.Points(
-        pGeo,
-        new THREE.PointsMaterial({
-          size: isMobile ? 0.05 : 0.07,
-          color: 0xb6ff3d,
-          transparent: true,
-          opacity: 0.55,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-          sizeAttenuation: true,
-        })
+      /* brilho no chão */
+      const glowCanvas = document.createElement("canvas");
+      glowCanvas.width = glowCanvas.height = 256;
+      const gctx = glowCanvas.getContext("2d");
+      const grad = gctx.createRadialGradient(128, 128, 8, 128, 128, 128);
+      grad.addColorStop(0, "rgba(118,185,0,0.55)");
+      grad.addColorStop(1, "rgba(118,185,0,0)");
+      gctx.fillStyle = grad;
+      gctx.fillRect(0, 0, 256, 256);
+      const floorGlow = new THREE.Mesh(
+        new THREE.PlaneGeometry(34, 34),
+        new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(glowCanvas), transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false })
       );
+      floorGlow.rotation.x = -Math.PI / 2;
+      floorGlow.position.y = -2.6;
+      scene.add(floorGlow);
 
-      scene.add(particles);
+      /* poeira sutil */
+      const dustCount = isMobile ? 120 : 300;
+      const dustGeo = new THREE.BufferGeometry();
+      const dustPos = new Float32Array(dustCount * 3);
+      for (let i = 0; i < dustCount; i++) {
+        dustPos[i * 3] = (Math.random() - 0.5) * 44;
+        dustPos[i * 3 + 1] = Math.random() * 14 - 2;
+        dustPos[i * 3 + 2] = (Math.random() - 0.5) * 44;
+      }
+      dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+      const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
+        size: 0.045, color: 0xbfe68a, transparent: true, opacity: 0.4,
+        blending: THREE.AdditiveBlending, depthWrite: false,
+      }));
+      scene.add(dust);
 
-      const markersContainer = document.getElementById("markers");
-      const markerData = [
-        {
-          label: "GPU",
-          sub: "Parallel compute",
-          pos: [-12, 2.4, -6],
-          chapter: 1,
-        },
-        {
-          label: "CUDA",
-          sub: "Developer platform",
-          pos: [10, 2.8, -14],
-          chapter: 2,
-        },
-        {
-          label: "RTX",
-          sub: "Ray tracing + AI",
-          pos: [-8, 3.2, -24],
-          chapter: 3,
-        },
-        {
-          label: "Omniverse",
-          sub: "Digital twins",
-          pos: [12, 3.6, -36],
-          chapter: 4,
-        },
-        {
-          label: "Physical AI",
-          sub: "Robotics",
-          pos: [0, 4.2, -46],
-          chapter: 5,
-        },
+      /* ---------------- AI FACTORY (GPUs em série) ---------------- */
+      const shroudCloneMat = new THREE.MeshStandardMaterial({ color: 0x14171b, roughness: 0.4, metalness: 0.85, transparent: true, opacity: 0 });
+      const ledCloneMat = new THREE.MeshBasicMaterial({ color: 0x76b900, transparent: true, opacity: 0 });
+      const ringCloneMat = new THREE.MeshStandardMaterial({ color: 0x1e2228, roughness: 0.45, metalness: 0.9, transparent: true, opacity: 0 });
+
+      function miniGPU() {
+        const m = new THREE.Group();
+        const body = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.36, 2.7), shroudCloneMat);
+        m.add(body);
+        const strip = new THREE.Mesh(new THREE.BoxGeometry(6.3, 0.05, 0.06), ledCloneMat);
+        strip.position.set(0, 0.1, 1.37); m.add(strip);
+        for (let f = 0; f < 3; f++) {
+          const r = new THREE.Mesh(ringGeo, ringCloneMat);
+          r.rotation.x = Math.PI / 2;
+          r.position.set((f - 1) * 2.05, 0.2, 0);
+          m.add(r);
+        }
+        return m;
+      }
+
+      const factory = new THREE.Group();
+      const factoryCount = isMobile ? 6 : 14;
+      for (let i = 0; i < factoryCount; i++) {
+        const m = miniGPU();
+        const side = i % 2 ? 1 : -1;
+        m.position.set(side * (4.9 + Math.random() * 1.4), -0.6 - Math.random() * 0.5, -9 - i * 4.1);
+        m.rotation.y = side * -0.16;
+        factory.add(m);
+      }
+      scene.add(factory);
+
+      /* ---------------- HOTSPOTS ---------------- */
+      const markersBox = document.getElementById("markers");
+      const markerDefs = [
+        { chapter: 1, local: [2.05, 0.7, 0], text: "3× FANS AXIAIS" },
+        { chapter: 1, local: [-2.05, 0.55, 1.0], text: "VAPOR CHAMBER" },
+        { chapter: 2, local: [0, -0.35, 0.5], text: "21.760 CUDA CORES" },
+        { chapter: 2, local: [2.3, -0.35, -0.7], text: "32 GB GDDR7" },
+        { chapter: 3, local: [-3.35, 0.15, 0.7], text: "RT CORES 4ª GEN" },
+        { chapter: 3, local: [-3.35, 0.1, -0.9], text: "DISPLAYPORT 2.1b" },
+        { chapter: 4, local: [0, 0.4, 1.35], text: "DLSS 4 · MULTI FRAME GEN" },
+        { chapter: 4, local: [2.7, 0.35, -1.0], text: "TENSOR CORES 5ª GEN" },
+        { chapter: 5, world: [5.2, 0.6, -16], text: "DGX SUPERPOD" },
       ];
-
       const markers = [];
-
-      if (markersContainer) {
-        markerData.forEach((data) => {
+      if (markersBox && !isMobile) {
+        markerDefs.forEach((def) => {
           const el = document.createElement("div");
           el.className = "marker";
-          el.innerHTML = `
-            <div class="marker-pill">
-              <b>${data.label}</b>
-              <span>${data.sub}</span>
-            </div>
-          `;
-
-          markersContainer.appendChild(el);
-
+          el.innerHTML = '<div class="marker-inner"><div class="m-dot"></div><div class="m-line"></div><div class="m-label">' + def.text + "</div></div>";
+          markersBox.appendChild(el);
           markers.push({
             el,
-            vector: new THREE.Vector3(...data.pos),
-            chapter: data.chapter,
+            chapter: def.chapter,
+            pos: def.world ? new THREE.Vector3(...def.world) : null,
+            local: def.local ? new THREE.Vector3(...def.local) : null,
           });
         });
       }
 
+      /* ---------------- BLOOM ---------------- */
       let composer = null;
-
       if (!isMobile && !reducedMotion) {
         try {
-          const [
-            { EffectComposer },
-            { RenderPass },
-            { UnrealBloomPass },
-            { OutputPass },
-          ] = await Promise.all([
+          const [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }] = await Promise.all([
             import("three/addons/postprocessing/EffectComposer.js"),
             import("three/addons/postprocessing/RenderPass.js"),
             import("three/addons/postprocessing/UnrealBloomPass.js"),
             import("three/addons/postprocessing/OutputPass.js"),
           ]);
-
           composer = new EffectComposer(renderer);
-
-          if (composer.setPixelRatio) {
-            composer.setPixelRatio(renderer.getPixelRatio());
-          }
-
+          if (composer.setPixelRatio) composer.setPixelRatio(renderer.getPixelRatio());
           composer.setSize(window.innerWidth, window.innerHeight);
-
-          const renderPass = new RenderPass(scene, camera);
-          composer.addPass(renderPass);
-
-          const bloomPass = new UnrealBloomPass(
-            new THREE.Vector2(window.innerWidth, window.innerHeight),
-            0.65,
-            0.5,
-            0.18
-          );
-
-          composer.addPass(bloomPass);
+          composer.addPass(new RenderPass(scene, camera));
+          composer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.55, 0.55, 0.72));
           composer.addPass(new OutputPass());
-        } catch (err) {
-          console.warn("Bloom indisponível.", err);
-        }
+        } catch (e) { console.warn("Bloom indisponível.", e); }
       }
 
       function onResize() {
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-
-        camera.aspect = w / h;
+        camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-
-        renderer.setSize(w, h);
-
-        if (composer) {
-          composer.setSize(w, h);
-        }
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        if (composer) composer.setSize(window.innerWidth, window.innerHeight);
       }
-
       window.addEventListener("resize", onResize);
 
       let running = !document.hidden;
+      document.addEventListener("visibilitychange", () => { running = !document.hidden; if (running) animate(); });
 
-      document.addEventListener("visibilitychange", () => {
-        running = !document.hidden;
-        if (running) animate();
-      });
-
+      /* ---------------- CAMERA KEYFRAMES ---------------- */
+      const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
       const shots = [
-        {
-          pos: new THREE.Vector3(0, 10, 26),
-          look: new THREE.Vector3(0, 1.5, -8),
-        },
-        {
-          pos: new THREE.Vector3(14, 4.5, 10),
-          look: new THREE.Vector3(0, 2, -14),
-        },
-        {
-          pos: new THREE.Vector3(-12, 7, -6),
-          look: new THREE.Vector3(0, 3, -30),
-        },
-        {
-          pos: new THREE.Vector3(0, 3.2, -26),
-          look: new THREE.Vector3(0, 3.5, -60),
-        },
-        {
-          pos: new THREE.Vector3(10, 8, -44),
-          look: new THREE.Vector3(0, 5, -80),
-        },
-        {
-          pos: new THREE.Vector3(0, 18, -64),
-          look: new THREE.Vector3(0, 6, -110),
-        },
+        { cam: V3(8.2, 2.6, 8.6),  look: V3(0, 0.2, 0),    rot: V3(0.12, -0.65, 0.03) },
+        { cam: V3(1.2, 6.6, 5.0),  look: V3(0, 0.4, 0),    rot: V3(0.55, -0.15, 0) },
+        { cam: V3(-3.2, -4.8, 6.4), look: V3(0, -0.3, 0),  rot: V3(2.85, 0.35, 0) },
+        { cam: V3(-9.4, 1.4, 2.4), look: V3(-1.2, 0, 0),   rot: V3(0.08, -1.35, 0) },
+        { cam: V3(4.8, 1.6, 7.4),  look: V3(0, 0.2, 0),    rot: V3(0.05, -0.35, 0) },
+        { cam: V3(2.6, 3.4, 15.5), look: V3(0, 0.6, -8),   rot: V3(0.1, -0.25, 0) },
+        { cam: V3(0, 7.5, 21),     look: V3(0, 1.2, -14),  rot: V3(0.06, 0.15, 0) },
       ];
+
+      const accents = [0x76b900, 0x8fd400, 0xaaff22, 0x22d8ff, 0xffb020, 0x38f0c0, 0x76b900].map((c) => new THREE.Color(c));
 
       const camPos = new THREE.Vector3();
       const camLook = new THREE.Vector3();
-      const tempLook = new THREE.Vector3();
+      const gpuRot = new THREE.Vector3();
+      const tmpLook = new THREE.Vector3();
+      const tmpColor = new THREE.Color();
       const proj = new THREE.Vector3();
+      const worldPos = new THREE.Vector3();
 
-      function updateCamera(p) {
-        const seg = p * (shots.length - 1);
-        const i = Math.min(Math.floor(seg), shots.length - 2);
-        const a = shots[i];
-        const b = shots[i + 1];
-        const t = THREE.MathUtils.clamp(seg - i, 0, 1);
-        const eased = t * t * (3 - 2 * t);
-
-        camPos.lerpVectors(a.pos, b.pos, eased);
-        camLook.lerpVectors(a.look, b.look, eased);
-      }
+      const clamp01 = (v) => Math.min(1, Math.max(0, v));
+      const smoothstep = (a, b, v) => { const t = clamp01((v - a) / (b - a)); return t * t * (3 - 2 * t); };
 
       const clock = new THREE.Clock();
+      let frame = 0;
 
       function animate() {
         if (!running) return;
@@ -1331,68 +892,98 @@
 
         const delta = Math.min(clock.getDelta(), 0.05);
         const t = reducedMotion ? 0 : clock.elapsedTime;
+        frame++;
 
         state.smooth += (state.progress - state.smooth) * (reducedMotion ? 1 : 0.075);
+        state.mouseX += (state.tMouseX - state.mouseX) * 0.05;
+        state.mouseY += (state.tMouseY - state.mouseY) * 0.05;
 
-        state.mouseX += (state.targetMouseX - state.mouseX) * 0.05;
-        state.mouseY += (state.targetMouseY - state.mouseY) * 0.05;
+        const vel = Math.abs(state.smooth - state.lastSmooth) / Math.max(delta, 0.001);
+        state.lastSmooth = state.smooth;
 
-        const p = THREE.MathUtils.clamp(state.smooth, 0, 1);
+        const p = clamp01(state.smooth);
+        const cf = p * (shots.length - 1);
+        state.chapterFloat = cf;
 
-        updateCamera(p);
+        /* interpola keyframes */
+        const i = Math.min(Math.floor(cf), shots.length - 2);
+        const a = shots[i], b = shots[i + 1];
+        const lt = clamp01(cf - i);
+        const e = lt * lt * (3 - 2 * lt);
+
+        camPos.lerpVectors(a.cam, b.cam, e);
+        camLook.lerpVectors(a.look, b.look, e);
+        gpuRot.lerpVectors(a.rot, b.rot, e);
 
         camera.position.copy(camPos);
-        camera.position.x += state.mouseX * 1.8;
-        camera.position.y += -state.mouseY * 1.2;
+        camera.position.x += state.mouseX * 0.9;
+        camera.position.y += -state.mouseY * 0.6 + Math.sin(t * 0.5) * 0.12;
 
-        tempLook.copy(camLook);
-        tempLook.x += state.mouseX * 1.2;
-        tempLook.y += -state.mouseY * 0.8;
+        tmpLook.copy(camLook);
+        tmpLook.x += state.mouseX * 0.7;
+        tmpLook.y += -state.mouseY * 0.5;
+        camera.lookAt(tmpLook);
 
-        camera.lookAt(tempLook);
-        camera.rotation.z +=
-          Math.sin(p * Math.PI * 2) * 0.04 + state.mouseX * 0.02;
+        gpu.rotation.set(
+          gpuRot.x + state.mouseY * 0.05,
+          gpuRot.y + state.mouseX * 0.08,
+          gpuRot.z
+        );
+        gpu.position.y = Math.sin(t * 0.8) * 0.08;
 
-        fieldMat.uniforms.uTime.value = t;
-        fieldMat.uniforms.uScroll.value = p;
+        /* cor do capítulo */
+        const ci = Math.min(Math.floor(cf), accents.length - 2);
+        tmpColor.lerpColors(accents[ci], accents[ci + 1], clamp01(cf - ci));
+        rim.color.copy(tmpColor);
+        ledMat.emissive.copy(tmpColor);
+        ledCloneMat.color.copy(tmpColor);
 
-        const hue = 0.24 + p * 0.1;
+        /* fans reagem ao scroll */
+        const fanTarget = 2.5 + Math.min(vel * 10, 26);
+        state.fanSpeed += (fanTarget - state.fanSpeed) * 0.06;
+        fans.forEach((f) => { f.blades.rotation.y += state.fanSpeed * delta * f.dir * 2.2; });
 
-        fieldMat.uniforms.uColorB.value.setHSL(hue, 1, 0.45);
-        fieldMat.uniforms.uColorC.value.setHSL(hue + 0.05, 1, 0.72);
-        fieldMat.uniforms.uColorA.value.setHSL(hue, 0.7, 0.05);
+        ledMat.emissiveIntensity = 2.2 + Math.sin(t * 2.4) * 0.5 + Math.min(vel * 2, 1.5);
 
-        bgColor.setHSL(hue, 0.6, 0.02);
-        scene.fog.color.copy(bgColor);
+        /* factory aparece no capítulo 5 */
+        const fFade = smoothstep(4.1, 5.2, cf);
+        shroudCloneMat.opacity = fFade * 0.95;
+        ringCloneMat.opacity = fFade * 0.9;
+        ledCloneMat.opacity = fFade;
+        factory.visible = fFade > 0.01;
 
-        particles.rotation.y = t * 0.02 + p * 0.35;
-        particles.position.y = Math.sin(t * 0.5) * 0.2;
+        dust.rotation.y = t * 0.012;
+        dust.position.y = Math.sin(t * 0.3) * 0.3;
+        floorGlow.material.opacity = 0.38 + Math.sin(t * 1.6) * 0.1;
 
-        const active = state.activeChapter;
-
-        markers.forEach((marker) => {
-          proj.copy(marker.vector).project(camera);
-
-          const onScreen = proj.z > -1 && proj.z < 1;
-          const dist = camera.position.distanceTo(marker.vector);
-          const show = onScreen && active >= marker.chapter && dist < 60;
-
-          if (show) {
+        /* hotspots */
+        if (markers.length) {
+          gpu.updateMatrixWorld();
+          markers.forEach((m) => {
+            const show = m.chapter === state.activeChapter;
+            if (!show) { m.el.classList.remove("on"); return; }
+            if (m.local) worldPos.copy(m.local).applyMatrix4(gpu.matrixWorld);
+            else worldPos.copy(m.pos);
+            proj.copy(worldPos).project(camera);
+            if (proj.z > 1 || proj.z < -1) { m.el.classList.remove("on"); return; }
             const x = (proj.x * 0.5 + 0.5) * window.innerWidth;
             const y = (-proj.y * 0.5 + 0.5) * window.innerHeight;
-
-            marker.el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-            marker.el.classList.add("visible");
-          } else {
-            marker.el.classList.remove("visible");
-          }
-        });
-
-        if (composer) {
-          composer.render();
-        } else {
-          renderer.render(scene, camera);
+            m.el.style.transform = "translate3d(" + x + "px," + y + "px,0) translate(-4px,-50%)";
+            m.el.classList.add("on");
+          });
         }
+
+        /* HUD vivo */
+        if (frame % 6 === 0) {
+          const fs = state.fanSpeed;
+          hudClock.textContent = (2.35 + fs * 0.018 + Math.sin(t * 3) * 0.02).toFixed(2) + " GHz";
+          hudTemp.textContent = Math.round(54 + fs * 0.55 + Math.sin(t * 1.7) * 1.4) + "°C";
+          hudFan.textContent = Math.round(fs * 130).toLocaleString("pt-BR") + " RPM";
+          hudPower.textContent = Math.round(240 + fs * 7 + Math.sin(t * 2.2) * 6) + " W";
+        }
+
+        if (composer) composer.render();
+        else renderer.render(scene, camera);
       }
 
       animate();
@@ -1401,4 +992,4 @@
     init3D();
   </script>
 </body>
-  </html>
+                                             </html>
