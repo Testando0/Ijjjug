@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#03040a" />
-  <title>NVIDIA Evolution — Cinematic 3D Scrollytelling</title>
+  <meta name="theme-color" content="#020403" />
+  <title>NVIDIA — AI Compute Experience</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,15 +15,13 @@
 
   <style>
     :root {
-      --bg: #03040a;
-      --txt: #f4f7ff;
-      --muted: #b7c3e6;
-      --line: rgba(255, 255, 255, 0.12);
-      --blue: #3d8bff;
+      --bg: #020403;
+      --txt: #f2fff4;
+      --muted: #9fb8a8;
+      --line: rgba(182, 255, 61, 0.14);
+      --green: #76b900;
+      --lime: #b6ff3d;
       --cyan: #37f6c9;
-      --purple: #8f5bff;
-      --pink: #ff5fd2;
-      --yellow: #ffd84d;
       --display: "Sora", sans-serif;
       --body: "Inter", sans-serif;
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -53,7 +51,7 @@
     }
 
     ::selection {
-      background: rgba(55, 246, 201, 0.3);
+      background: rgba(118, 185, 0, 0.35);
       color: #fff;
     }
 
@@ -71,7 +69,7 @@
       position: fixed;
       inset: 0;
       z-index: 2000;
-      background: #03040a;
+      background: #020403;
       display: grid;
       place-items: center;
       transition: opacity 0.7s var(--ease), visibility 0.7s var(--ease);
@@ -88,6 +86,7 @@
       font-size: 24px;
       letter-spacing: 0.24em;
       text-transform: uppercase;
+      color: var(--lime);
       animation: pulse 1.2s ease-in-out infinite;
     }
 
@@ -106,8 +105,8 @@
       z-index: 1000;
       transform-origin: 0 50%;
       transform: scaleX(0);
-      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--purple), var(--pink));
-      box-shadow: 0 0 24px rgba(55, 246, 201, 0.35);
+      background: linear-gradient(90deg, var(--green), var(--lime), var(--cyan));
+      box-shadow: 0 0 24px rgba(118, 185, 0, 0.45);
     }
 
     .bg-fallback {
@@ -115,10 +114,10 @@
       inset: 0;
       z-index: 0;
       background:
-        radial-gradient(circle at 15% 20%, rgba(61, 139, 255, 0.22), transparent 28%),
-        radial-gradient(circle at 85% 25%, rgba(143, 91, 255, 0.18), transparent 24%),
-        radial-gradient(circle at 50% 85%, rgba(55, 246, 201, 0.16), transparent 30%),
-        #03040a;
+        radial-gradient(circle at 18% 22%, rgba(118, 185, 0, 0.18), transparent 28%),
+        radial-gradient(circle at 82% 28%, rgba(55, 246, 201, 0.12), transparent 24%),
+        radial-gradient(circle at 50% 82%, rgba(182, 255, 61, 0.1), transparent 30%),
+        #020403;
     }
 
     #bg3d {
@@ -135,7 +134,7 @@
       z-index: 2;
       pointer-events: none;
       background:
-        radial-gradient(circle at 50% 45%, transparent 32%, rgba(0, 0, 0, 0.34) 100%);
+        radial-gradient(circle at 50% 42%, transparent 28%, rgba(0, 0, 0, 0.36) 100%);
     }
 
     .site-header {
@@ -145,7 +144,7 @@
       width: 100%;
       z-index: 100;
       padding: 16px 0;
-      background: linear-gradient(180deg, rgba(3, 4, 10, 0.72), transparent);
+      background: linear-gradient(180deg, rgba(2, 4, 3, 0.74), transparent);
       -webkit-backdrop-filter: blur(14px);
       backdrop-filter: blur(14px);
     }
@@ -171,12 +170,12 @@
       width: 38px;
       height: 38px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      background: linear-gradient(135deg, var(--green), var(--lime));
       display: grid;
       place-items: center;
-      color: #041018;
+      color: #031000;
       font-weight: 900;
-      box-shadow: 0 0 30px rgba(61, 139, 255, 0.4);
+      box-shadow: 0 0 30px rgba(118, 185, 0, 0.4);
       flex: 0 0 auto;
     }
 
@@ -217,22 +216,16 @@
       transform: translateY(-3px);
     }
 
-    .btn-gradient {
-      background: linear-gradient(135deg, var(--blue), var(--purple) 55%, var(--pink));
-      color: #fff;
-      box-shadow: 0 18px 50px rgba(143, 91, 255, 0.35);
-    }
-
-    .btn-yellow {
-      background: linear-gradient(135deg, var(--yellow), #ff9a3d);
-      color: #221000;
-      box-shadow: 0 18px 50px rgba(255, 154, 61, 0.28);
+    .btn-green {
+      background: linear-gradient(135deg, var(--green), var(--lime));
+      color: #031000;
+      box-shadow: 0 18px 50px rgba(118, 185, 0, 0.32);
     }
 
     .btn-outline {
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(182, 255, 61, 0.22);
       color: #fff;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .chapter {
@@ -271,9 +264,54 @@
     }
 
     .dot.active {
-      background: var(--cyan);
-      box-shadow: 0 0 18px rgba(55, 246, 201, 0.7);
+      background: var(--lime);
+      box-shadow: 0 0 18px rgba(182, 255, 61, 0.7);
       transform: scale(1.35);
+    }
+
+    .markers {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .marker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.35s var(--ease);
+      will-change: transform;
+    }
+
+    .marker.visible {
+      opacity: 1;
+    }
+
+    .marker-pill {
+      display: grid;
+      gap: 2px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(2, 6, 3, 0.72);
+      border: 1px solid rgba(118, 185, 0, 0.45);
+      box-shadow: 0 0 30px rgba(118, 185, 0, 0.18);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .marker-pill b {
+      font-family: var(--display);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #eaffc9;
+    }
+
+    .marker-pill span {
+      font-size: 11px;
+      color: var(--muted);
     }
 
     main {
@@ -283,7 +321,7 @@
 
     .story {
       position: relative;
-      height: 700vh;
+      height: 650vh;
     }
 
     .story-sticky {
@@ -301,7 +339,7 @@
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(circle at 50% 50%, transparent 35%, rgba(0, 0, 0, 0.42) 100%);
+        radial-gradient(circle at 50% 50%, transparent 34%, rgba(0, 0, 0, 0.38) 100%);
     }
 
     .step {
@@ -344,15 +382,15 @@
       display: inline-flex;
       padding: 10px 16px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(118, 185, 0, 0.28);
+      background: rgba(118, 185, 0, 0.08);
       -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
       font-size: 12px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       font-weight: 900;
-      color: #d9e7ff;
+      color: #d9ffb0;
       margin-bottom: 20px;
     }
 
@@ -384,7 +422,7 @@
     }
 
     .gradient-text {
-      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--pink));
+      background: linear-gradient(90deg, var(--lime), var(--green), var(--cyan));
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -392,7 +430,7 @@
 
     .outline-text {
       color: transparent;
-      -webkit-text-stroke: 2px rgba(255, 255, 255, 0.3);
+      -webkit-text-stroke: 2px rgba(182, 255, 61, 0.35);
     }
 
     .scroll-hint {
@@ -413,7 +451,7 @@
     .mouse {
       width: 26px;
       height: 42px;
-      border: 2px solid rgba(255, 255, 255, 0.28);
+      border: 2px solid rgba(182, 255, 61, 0.28);
       border-radius: 999px;
       position: relative;
     }
@@ -425,7 +463,7 @@
       top: 8px;
       width: 4px;
       height: 8px;
-      background: var(--cyan);
+      background: var(--lime);
       border-radius: 999px;
       transform: translateX(-50%);
       animation: wheel 1.6s infinite;
@@ -449,8 +487,8 @@
       position: relative;
       z-index: 3;
       padding: 80px 0;
-      background: rgba(3, 4, 10, 0.78);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(2, 4, 3, 0.78);
+      border-top: 1px solid rgba(118, 185, 0, 0.16);
       -webkit-backdrop-filter: blur(14px);
       backdrop-filter: blur(14px);
     }
@@ -514,7 +552,7 @@
 
     @media (max-width: 820px) {
       .story {
-        height: 600vh;
+        height: 520vh;
       }
 
       .dots {
@@ -528,6 +566,18 @@
 
       .step {
         padding: 18px;
+      }
+
+      .marker-pill {
+        padding: 8px 10px;
+      }
+
+      .marker-pill b {
+        font-size: 11px;
+      }
+
+      .marker-pill span {
+        font-size: 10px;
       }
     }
 
@@ -565,7 +615,8 @@
 
       .dots,
       .chapter,
-      .scroll-hint {
+      .scroll-hint,
+      .markers {
         display: none;
       }
 
@@ -577,7 +628,7 @@
 </head>
 <body>
   <div class="loader" id="loader">
-    <div class="loader-logo">NVIDIA EVOLUTION</div>
+    <div class="loader-logo">NVIDIA</div>
   </div>
 
   <div class="progress" id="progressBar"></div>
@@ -585,20 +636,21 @@
   <div class="bg-fallback"></div>
   <canvas id="bg3d"></canvas>
   <div class="vignette"></div>
+  <div class="markers" id="markers"></div>
 
   <header class="site-header">
     <div class="container header-inner">
       <a href="#top" class="logo">
         <span class="logo-badge">N</span>
         <span>
-          NVIDIA EVOLUTION
-          <small>CINEMATIC SCROLLYTELLING</small>
+          NVIDIA
+          <small>AI COMPUTE EXPERIENCE</small>
         </span>
       </a>
 
       <div class="header-actions">
-        <a href="#final" class="btn btn-outline">Ver capítulo final</a>
-        <a href="#final" class="btn btn-gradient">Começar</a>
+        <a href="#final" class="btn btn-outline">Capítulo final</a>
+        <a href="#final" class="btn btn-green">Explorar</a>
       </div>
     </div>
   </header>
@@ -610,84 +662,84 @@
     <section class="story">
       <div class="story-sticky">
         <article class="step">
-          <span class="step-badge">Capítulo 01 — A entrada</span>
+          <span class="step-badge">NVIDIA — AI Compute</span>
           <h2>
-            A evolução<br />
-            <span class="gradient-text">começa aqui</span>
+            O motor da<br />
+            <span class="gradient-text">era da IA</span>
           </h2>
           <p>
-            Role para atravessar a linha do tempo da aceleração gráfica.
-            Cada movimento do scroll move a câmera dentro de um fluxo 3D de dados.
+            Uma experiência 3D interativa sobre a computação acelerada que alimenta
+            jogos, IA, simulação, robótica e o próximo estágio da realidade digital.
           </p>
         </article>
 
         <article class="step">
-          <span class="step-badge">Capítulo 02 — 1993</span>
+          <span class="step-badge">Capítulo 01 — GPU</span>
           <h2>
-            A origem<br />
-            <span class="outline-text">da GPU</span>
+            Computação<br />
+            <span class="outline-text">paralela</span>
           </h2>
           <p>
-            A NVIDIA nasce para transformar gráficos em experiência.
-            O pixel deixa de ser só imagem e vira movimento, profundidade e imersão.
+            A GPU deixou de ser apenas uma placa gráfica. Ela se tornou uma máquina
+            de processamento massivamente paralela, feita para milhares de cálculos simultâneos.
           </p>
         </article>
 
         <article class="step">
-          <span class="step-badge">Capítulo 03 — 2006</span>
+          <span class="step-badge">Capítulo 02 — CUDA</span>
           <h2>
             CUDA<br />
-            <span class="gradient-text">computação paralela</span>
+            <span class="gradient-text">plataforma</span>
           </h2>
           <p>
-            A GPU sai dos jogos e entra na ciência, simulação e IA.
-            Milhares de núcleos trabalham juntos para acelerar o impossível.
+            CUDA abriu a GPU para desenvolvedores, cientistas e pesquisadores.
+            A aceleração saiu dos jogos e entrou na IA, simulação e computação científica.
           </p>
         </article>
 
         <article class="step">
-          <span class="step-badge">Capítulo 04 — 2018</span>
+          <span class="step-badge">Capítulo 03 — RTX</span>
           <h2>
             RTX<br />
-            <span class="outline-text">ray tracing</span>
+            <span class="outline-text">tempo real</span>
           </h2>
           <p>
-            Luz, reflexo e sombra em tempo real.
-            A imagem fica cinematográfica, e a IA passa a reconstruir cada quadro.
+            Ray tracing, DLSS e Tensor Cores transformaram renderização em tempo real.
+            Luz, reflexo e inteligência passaram a coexistir no mesmo quadro.
           </p>
         </article>
 
         <article class="step">
-          <span class="step-badge">Capítulo 05 — 2020</span>
+          <span class="step-badge">Capítulo 04 — Omniverse</span>
           <h2>
-            Omniverse<br />
-            <span class="gradient-text">mundos digitais</span>
+            Mundos<br />
+            <span class="gradient-text">simulados</span>
           </h2>
           <p>
-            Gêmeos digitais, simulação física e colaboração em tempo real.
-            A fronteira entre produção, design e IA desaparece.
+            Omniverse conecta design, física, gêmeos digitais e colaboração em tempo real.
+            Indústrias inteiras passam a operar dentro de simulações vivas.
           </p>
         </article>
 
         <article class="step" id="final">
-          <span class="step-badge">Capítulo 06 — 2026</span>
+          <span class="step-badge">Capítulo 05 — Physical AI</span>
           <h2>
-            Physical AI<br />
-            <span class="gradient-text">o futuro</span>
+            IA no<br />
+            <span class="gradient-text">mundo real</span>
           </h2>
           <p>
-            Robôs, fábricas inteligentes, simulação extrema e computação que recria a realidade.
-            A próxima década é acelerada.
+            Robôs, fábricas inteligentes, sistemas autônomos e computação física.
+            A próxima fronteira da NVIDIA é treinar IA para entender e agir no mundo real.
           </p>
           <div class="hero-actions">
-            <a href="#top" class="btn btn-yellow">Rever jornada</a>
+            <a href="#top" class="btn btn-green">Rever experiência</a>
             <a href="#footer" class="btn btn-outline">Explorar mais</a>
           </div>
         </article>
 
         <div class="scroll-hint">
           <div class="mouse"></div>
-          <span>role para navegar</span>
+          <span>role para acelerar</span>
         </div>
       </div>
     </section>
@@ -695,18 +747,17 @@
     <footer class="footer" id="footer">
       <div class="container footer-grid">
         <div>
-          <h4>NVIDIA Evolution</h4>
+          <h4>NVIDIA AI Compute</h4>
           <p>
-            Experiência de scrollytelling 3D cinematográfico, com câmera guiada pelo scroll,
-            túnel de dados, capítulos animados e visual premium inspirado em landing pages virais.
+            Experiência 3D interativa inspirada em sites premium WebGL: cena viva,
+            câmera cinematográfica, capítulos animados e marcadores integrados ao espaço 3D.
           </p>
         </div>
 
         <div>
           <h4>Capítulos</h4>
           <div class="footer-links">
-            <a href="#top">A entrada</a>
-            <a href="#top">1993</a>
+            <a href="#top">GPU</a>
             <a href="#top">CUDA</a>
             <a href="#top">RTX</a>
             <a href="#top">Omniverse</a>
@@ -717,17 +768,17 @@
         <div>
           <h4>Experiência</h4>
           <div class="footer-links">
-            <a href="#top">3D camera path</a>
-            <a href="#top">Scroll scrubbing</a>
-            <a href="#top">Capítulos animados</a>
-            <a href="#top">Mobile ready</a>
+            <a href="#top">3D compute field</a>
+            <a href="#top">Scroll camera</a>
+            <a href="#top">3D markers</a>
+            <a href="#top">Bloom</a>
           </div>
         </div>
       </div>
 
       <div class="container footer-bottom">
-        <div>© 2026 NVIDIA Evolution — conceito visual não oficial.</div>
-        <div>Cinematic 3D scrollytelling mode.</div>
+        <div>© 2026 NVIDIA concept — não oficial.</div>
+        <div>Interactive WebGL scrollytelling.</div>
       </div>
     </footer>
   </main>
@@ -748,6 +799,7 @@
     const state = {
       progress: 0,
       smooth: 0,
+      activeChapter: 0,
       mouseX: 0,
       mouseY: 0,
       targetMouseX: 0,
@@ -784,6 +836,8 @@
         steps.length - 1,
         Math.round(progress * (steps.length - 1))
       );
+
+      state.activeChapter = idx;
 
       dots.forEach((dot, i) => {
         dot.classList.toggle("active", i === idx);
@@ -942,174 +996,160 @@
       );
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.2;
+      renderer.toneMappingExposure = 1.1;
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x03040a);
-      scene.fog = new THREE.FogExp2(0x03040a, isMobile ? 0.02 : 0.016);
+      const bgColor = new THREE.Color(0x020403);
+      scene.background = bgColor;
+      scene.fog = new THREE.FogExp2(0x020403, isMobile ? 0.028 : 0.02);
 
       const camera = new THREE.PerspectiveCamera(
-        55,
+        50,
         window.innerWidth / window.innerHeight,
         0.1,
-        500
+        300
       );
+      camera.position.set(0, 10, 26);
 
-      const points = [
-        new THREE.Vector3(0, 0, 70),
-        new THREE.Vector3(16, 6, 38),
-        new THREE.Vector3(-20, 10, 8),
-        new THREE.Vector3(14, -8, -28),
-        new THREE.Vector3(-16, 12, -62),
-        new THREE.Vector3(4, -4, -98),
-        new THREE.Vector3(22, 8, -134),
-        new THREE.Vector3(-18, -6, -172),
-        new THREE.Vector3(0, 4, -215),
-        new THREE.Vector3(0, 0, -260),
-      ];
+      const gridSize = isMobile ? 55 : 110;
+      const spacing = isMobile ? 1.0 : 0.9;
+      const count = gridSize * gridSize;
+      const half = ((gridSize - 1) * spacing) / 2;
 
-      const curve = new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.6);
+      const baseGeo = new THREE.BoxGeometry(0.16, 1, 0.16);
+      baseGeo.translate(0, 0.5, 0);
 
-      const tubeMat = new THREE.MeshBasicMaterial({
-        color: 0x43f1c8,
-        transparent: true,
-        opacity: 0.55,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      });
+      const instancedGeo = new THREE.InstancedBufferGeometry();
+      instancedGeo.index = baseGeo.index;
+      instancedGeo.setAttribute("position", baseGeo.getAttribute("position"));
+      instancedGeo.setAttribute("normal", baseGeo.getAttribute("normal"));
+      instancedGeo.setAttribute("uv", baseGeo.getAttribute("uv"));
 
-      const tubeGeo = new THREE.TubeGeometry(
-        curve,
-        isMobile ? 300 : 700,
-        0.28,
-        isMobile ? 8 : 14,
-        false
-      );
+      const offsets = new Float32Array(count * 3);
+      const randoms = new Float32Array(count);
 
-      const tube = new THREE.Mesh(tubeGeo, tubeMat);
-      scene.add(tube);
+      let idx = 0;
+      for (let ix = 0; ix < gridSize; ix++) {
+        for (let iz = 0; iz < gridSize; iz++) {
+          const i3 = idx * 3;
 
-      const tunnelMat = new THREE.MeshBasicMaterial({
-        color: 0x3d8bff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.07,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      });
+          offsets[i3] = ix * spacing - half + (Math.random() - 0.5) * 0.08;
+          offsets[i3 + 1] = 0;
+          offsets[i3 + 2] = iz * spacing - half + (Math.random() - 0.5) * 0.08;
 
-      const tunnelGeo = new THREE.TubeGeometry(
-        curve,
-        isMobile ? 160 : 360,
-        6.5,
-        isMobile ? 8 : 16,
-        false
-      );
-
-      const tunnel = new THREE.Mesh(tunnelGeo, tunnelMat);
-      scene.add(tunnel);
-
-      const ringsGroup = new THREE.Group();
-      scene.add(ringsGroup);
-
-      const ringCount = isMobile ? 24 : 60;
-      const ringGeo = new THREE.TorusGeometry(5.2, 0.08, 12, 90);
-
-      const ringMats = [
-        new THREE.MeshBasicMaterial({
-          color: 0x43f1c8,
-          transparent: true,
-          opacity: 0.38,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        }),
-        new THREE.MeshBasicMaterial({
-          color: 0x3d8bff,
-          transparent: true,
-          opacity: 0.34,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        }),
-        new THREE.MeshBasicMaterial({
-          color: 0x8f5bff,
-          transparent: true,
-          opacity: 0.32,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        }),
-      ];
-
-      const zAxis = new THREE.Vector3(0, 0, 1);
-
-      for (let i = 0; i < ringCount; i++) {
-        const t = i / (ringCount - 1);
-        const pos = curve.getPointAt(t);
-        const tangent = curve.getTangentAt(t).normalize();
-
-        const ring = new THREE.Mesh(ringGeo, ringMats[i % 3]);
-        ring.position.copy(pos);
-        ring.quaternion.setFromUnitVectors(zAxis, tangent);
-        ring.scale.setScalar(0.72 + Math.sin(t * Math.PI * 4) * 0.18 + Math.random() * 0.12);
-        ring.userData.speed = (i % 2 ? -1 : 1) * (0.08 + Math.random() * 0.25);
-
-        ringsGroup.add(ring);
+          randoms[idx] = Math.random();
+          idx++;
+        }
       }
 
-      const pCount = isMobile ? 2500 : 8000;
+      instancedGeo.setAttribute(
+        "aOffset",
+        new THREE.InstancedBufferAttribute(offsets, 3)
+      );
+
+      instancedGeo.setAttribute(
+        "aRandom",
+        new THREE.InstancedBufferAttribute(randoms, 1)
+      );
+
+      instancedGeo.instanceCount = count;
+
+      const fieldMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uScroll: { value: 0 },
+          uColorA: { value: new THREE.Color(0x03130a) },
+          uColorB: { value: new THREE.Color(0x76b900) },
+          uColorC: { value: new THREE.Color(0xd9ff7a) },
+        },
+        vertexShader: `
+          attribute vec3 aOffset;
+          attribute float aRandom;
+
+          uniform float uTime;
+          uniform float uScroll;
+
+          varying float vHeight;
+          varying float vLocalY;
+          varying float vDepth;
+
+          void main() {
+            vec3 pos = position;
+            vLocalY = position.y;
+
+            float x = aOffset.x;
+            float z = aOffset.z;
+            float dist = length(vec2(x, z));
+
+            float wave1 = sin(x * 0.35 + uTime * 1.2) * 0.55;
+            float wave2 = sin(z * 0.28 - uTime * 0.9) * 0.65;
+            float wave3 = sin((x + z) * 0.18 + uTime * 0.6) * 0.45;
+            float pulse = sin(dist * 0.45 - uTime * 1.6 + uScroll * 6.283) * 0.75;
+            float scrollWave = sin(x * 0.12 + z * 0.10 + uScroll * 12.0) * uScroll * 1.15;
+
+            float h = 1.15 + wave1 + wave2 + wave3 + pulse + scrollWave + aRandom * 0.35;
+            h = max(0.12, h);
+
+            pos.y *= h;
+            pos += aOffset;
+
+            vHeight = h;
+
+            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            gl_Position = projectionMatrix * mvPosition;
+            vDepth = -mvPosition.z;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColorA;
+          uniform vec3 uColorB;
+          uniform vec3 uColorC;
+
+          varying float vHeight;
+          varying float vLocalY;
+          varying float vDepth;
+
+          void main() {
+            float hMix = smoothstep(0.2, 3.4, vHeight);
+
+            vec3 base = mix(uColorA, uColorB, hMix);
+            vec3 color = mix(base, uColorC, vLocalY * (0.32 + hMix * 0.55));
+
+            color += uColorB * pow(vLocalY, 6.0) * 0.35;
+
+            float depthFade = 1.0 - smoothstep(20.0, 85.0, vDepth);
+            color *= depthFade;
+
+            gl_FragColor = vec4(color, 1.0);
+          }
+        `,
+      });
+
+      const field = new THREE.Mesh(instancedGeo, fieldMat);
+      field.frustumCulled = false;
+      scene.add(field);
+
+      const pCount = isMobile ? 1000 : 3000;
       const pGeo = new THREE.BufferGeometry();
       const positions = new Float32Array(pCount * 3);
-      const colors = new Float32Array(pCount * 3);
-
-      const p = new THREE.Vector3();
-      const tangent = new THREE.Vector3();
-      const right = new THREE.Vector3();
-      const up = new THREE.Vector3();
-      const offset = new THREE.Vector3();
-      const upSeed = new THREE.Vector3();
-      const color = new THREE.Color();
 
       for (let i = 0; i < pCount; i++) {
         const i3 = i * 3;
-        const t = Math.random();
 
-        curve.getPointAt(t, p);
-        curve.getTangentAt(t, tangent);
-        tangent.normalize();
-
-        upSeed.set(0, 1, 0);
-        if (Math.abs(tangent.y) > 0.99) upSeed.set(1, 0, 0);
-
-        right.crossVectors(tangent, upSeed).normalize();
-        up.crossVectors(tangent, right).normalize();
-
-        const radius = 2.5 + Math.random() * 15;
-        const theta = Math.random() * Math.PI * 2;
-
-        offset
-          .copy(right)
-          .multiplyScalar(Math.cos(theta) * radius)
-          .addScaledVector(up, Math.sin(theta) * radius);
-
-        positions[i3] = p.x + offset.x + (Math.random() - 0.5) * 2.5;
-        positions[i3 + 1] = p.y + offset.y + (Math.random() - 0.5) * 2.5;
-        positions[i3 + 2] = p.z + offset.z + (Math.random() - 0.5) * 2.5;
-
-        color.setHSL(0.5 + Math.random() * 0.25, 1, 0.68);
-        colors[i3] = color.r;
-        colors[i3 + 1] = color.g;
-        colors[i3 + 2] = color.b;
+        positions[i3] = (Math.random() - 0.5) * half * 2;
+        positions[i3 + 1] = Math.random() * 10;
+        positions[i3 + 2] = (Math.random() - 0.5) * half * 2;
       }
 
       pGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-      pGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
       const particles = new THREE.Points(
         pGeo,
         new THREE.PointsMaterial({
-          size: isMobile ? 0.16 : 0.22,
-          vertexColors: true,
+          size: isMobile ? 0.05 : 0.07,
+          color: 0xb6ff3d,
           transparent: true,
-          opacity: 0.8,
+          opacity: 0.55,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
           sizeAttenuation: true,
@@ -1117,6 +1157,63 @@
       );
 
       scene.add(particles);
+
+      const markersContainer = document.getElementById("markers");
+      const markerData = [
+        {
+          label: "GPU",
+          sub: "Parallel compute",
+          pos: [-12, 2.4, -6],
+          chapter: 1,
+        },
+        {
+          label: "CUDA",
+          sub: "Developer platform",
+          pos: [10, 2.8, -14],
+          chapter: 2,
+        },
+        {
+          label: "RTX",
+          sub: "Ray tracing + AI",
+          pos: [-8, 3.2, -24],
+          chapter: 3,
+        },
+        {
+          label: "Omniverse",
+          sub: "Digital twins",
+          pos: [12, 3.6, -36],
+          chapter: 4,
+        },
+        {
+          label: "Physical AI",
+          sub: "Robotics",
+          pos: [0, 4.2, -46],
+          chapter: 5,
+        },
+      ];
+
+      const markers = [];
+
+      if (markersContainer) {
+        markerData.forEach((data) => {
+          const el = document.createElement("div");
+          el.className = "marker";
+          el.innerHTML = `
+            <div class="marker-pill">
+              <b>${data.label}</b>
+              <span>${data.sub}</span>
+            </div>
+          `;
+
+          markersContainer.appendChild(el);
+
+          markers.push({
+            el,
+            vector: new THREE.Vector3(...data.pos),
+            chapter: data.chapter,
+          });
+        });
+      }
 
       let composer = null;
 
@@ -1147,9 +1244,9 @@
 
           const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(window.innerWidth, window.innerHeight),
-            1.05,
             0.65,
-            0.1
+            0.5,
+            0.18
           );
 
           composer.addPass(bloomPass);
@@ -1182,56 +1279,114 @@
         if (running) animate();
       });
 
-      const clock = new THREE.Clock();
+      const shots = [
+        {
+          pos: new THREE.Vector3(0, 10, 26),
+          look: new THREE.Vector3(0, 1.5, -8),
+        },
+        {
+          pos: new THREE.Vector3(14, 4.5, 10),
+          look: new THREE.Vector3(0, 2, -14),
+        },
+        {
+          pos: new THREE.Vector3(-12, 7, -6),
+          look: new THREE.Vector3(0, 3, -30),
+        },
+        {
+          pos: new THREE.Vector3(0, 3.2, -26),
+          look: new THREE.Vector3(0, 3.5, -60),
+        },
+        {
+          pos: new THREE.Vector3(10, 8, -44),
+          look: new THREE.Vector3(0, 5, -80),
+        },
+        {
+          pos: new THREE.Vector3(0, 18, -64),
+          look: new THREE.Vector3(0, 6, -110),
+        },
+      ];
+
       const camPos = new THREE.Vector3();
-      const lookPos = new THREE.Vector3();
-      const bgColor = new THREE.Color();
+      const camLook = new THREE.Vector3();
+      const tempLook = new THREE.Vector3();
+      const proj = new THREE.Vector3();
+
+      function updateCamera(p) {
+        const seg = p * (shots.length - 1);
+        const i = Math.min(Math.floor(seg), shots.length - 2);
+        const a = shots[i];
+        const b = shots[i + 1];
+        const t = THREE.MathUtils.clamp(seg - i, 0, 1);
+        const eased = t * t * (3 - 2 * t);
+
+        camPos.lerpVectors(a.pos, b.pos, eased);
+        camLook.lerpVectors(a.look, b.look, eased);
+      }
+
+      const clock = new THREE.Clock();
 
       function animate() {
         if (!running) return;
         requestAnimationFrame(animate);
 
         const delta = Math.min(clock.getDelta(), 0.05);
-        const t = clock.elapsedTime;
+        const t = reducedMotion ? 0 : clock.elapsedTime;
 
         state.smooth += (state.progress - state.smooth) * (reducedMotion ? 1 : 0.075);
 
         state.mouseX += (state.targetMouseX - state.mouseX) * 0.05;
         state.mouseY += (state.targetMouseY - state.mouseY) * 0.05;
 
-        const progress = THREE.MathUtils.clamp(state.smooth, 0, 1) * 0.985;
+        const p = THREE.MathUtils.clamp(state.smooth, 0, 1);
 
-        curve.getPointAt(progress, camPos);
-        curve.getPointAt(Math.min(progress + 0.018, 1), lookPos);
+        updateCamera(p);
 
         camera.position.copy(camPos);
-        camera.position.x += state.mouseX * 2.4;
-        camera.position.y += -state.mouseY * 1.8;
+        camera.position.x += state.mouseX * 1.8;
+        camera.position.y += -state.mouseY * 1.2;
 
-        camera.lookAt(lookPos);
+        tempLook.copy(camLook);
+        tempLook.x += state.mouseX * 1.2;
+        tempLook.y += -state.mouseY * 0.8;
+
+        camera.lookAt(tempLook);
         camera.rotation.z +=
-          Math.sin(state.smooth * Math.PI * 2) * 0.06 + state.mouseX * 0.03;
+          Math.sin(p * Math.PI * 2) * 0.04 + state.mouseX * 0.02;
 
-        const hue = 0.52 + state.smooth * 0.2;
+        fieldMat.uniforms.uTime.value = t;
+        fieldMat.uniforms.uScroll.value = p;
 
-        tubeMat.color.setHSL(hue, 1, 0.62);
-        tunnelMat.color.setHSL(hue + 0.05, 1, 0.45);
+        const hue = 0.24 + p * 0.1;
 
-        ringMats[0].color.setHSL(hue, 1, 0.62);
-        ringMats[1].color.setHSL(hue + 0.07, 1, 0.6);
-        ringMats[2].color.setHSL(hue + 0.14, 1, 0.62);
+        fieldMat.uniforms.uColorB.value.setHSL(hue, 1, 0.45);
+        fieldMat.uniforms.uColorC.value.setHSL(hue + 0.05, 1, 0.72);
+        fieldMat.uniforms.uColorA.value.setHSL(hue, 0.7, 0.05);
 
-        bgColor.setHSL(0.62 + state.smooth * 0.1, 0.65, 0.03);
-        scene.background.copy(bgColor);
+        bgColor.setHSL(hue, 0.6, 0.02);
         scene.fog.color.copy(bgColor);
-        scene.fog.density = (isMobile ? 0.02 : 0.016) + state.smooth * 0.006;
 
-        ringsGroup.children.forEach((ring) => {
-          ring.rotateZ(delta * ring.userData.speed);
+        particles.rotation.y = t * 0.02 + p * 0.35;
+        particles.position.y = Math.sin(t * 0.5) * 0.2;
+
+        const active = state.activeChapter;
+
+        markers.forEach((marker) => {
+          proj.copy(marker.vector).project(camera);
+
+          const onScreen = proj.z > -1 && proj.z < 1;
+          const dist = camera.position.distanceTo(marker.vector);
+          const show = onScreen && active >= marker.chapter && dist < 60;
+
+          if (show) {
+            const x = (proj.x * 0.5 + 0.5) * window.innerWidth;
+            const y = (-proj.y * 0.5 + 0.5) * window.innerHeight;
+
+            marker.el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+            marker.el.classList.add("visible");
+          } else {
+            marker.el.classList.remove("visible");
+          }
         });
-
-        particles.material.opacity = 0.62 + Math.sin(t * 1.4) * 0.12;
-        tubeMat.opacity = 0.45 + Math.sin(t * 2.0) * 0.12;
 
         if (composer) {
           composer.render();
@@ -1246,4 +1401,4 @@
     init3D();
   </script>
 </body>
-              </html>
+  </html>
